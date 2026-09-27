@@ -1,35 +1,76 @@
-# Vue 3 + TypeScript + Vite
+# Kylin Design UI
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+<div align="center">
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+<img src="src/assets/logo.svg" width="88" alt="Kylin Design UI" />
 
----
+**麒麟为之，企业级 Vue 3 组件库**
 
-## 组件演示页：API 表格与代码展示
+[![npm](https://img.shields.io/badge/npm-kylin--design--ui-1677ff)](https://www.npmjs.com/package/kylin-design-ui)
+[![Vue 3](https://img.shields.io/badge/Vue-3.x-42b883)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](./LICENSE)
 
-组件演示页（`src/views/<组件>/index.vue`）底部统一展示三栏 API 表格（Props / Events / Slots），并支持每个用例的"查看源码 / 复制"。
+</div>
 
-### API 表格怎么来的（自动生成）
+基于 **Vue 3 + TypeScript** 打造的企业级组件库，50+ 高质量 **K 前缀**组件开箱即用。
 
-`src/components/api-table` 是本项目内部的轻量文档表格组件，数据由脚本自动从组件源码提取，不手写。
+## 特性
 
-1. **生成数据**：`node scripts/gen-api.mjs <组件 index.tsx 路径> <输出 api-data.ts 路径>`
-   - 例：`node scripts/gen-api.mjs src/components/button/index.tsx src/views/button/api-data.ts`
-   - 脚本用 TypeScript AST 解析 `defineComponent` 的 `props` / `emits` / `setup`，展开 `types.ts` 里的联合类型别名，输出 `api-data.ts`（纯数据、勿手改）。
-2. **接入页面**：在演示页底部渲染
-   ```
-   <APITable :props="apiProps" :emits="apiEmits" :slots="apiSlots" />
-   ```
+- 🧩 **50+ 企业级组件** —— 从 Button、Table 到类 Excel 的 SupTable 超级表格，覆盖中后台常见场景
+- 🔷 **完整类型** —— 全部组件 `<script setup>` + TSX 编写，导出完整 `.d.ts`，Props 提示开箱即得
+- 📦 **按需引入** —— ESM + Tree-shaking 友好导出，`withInstall` 支持全量 `app.use` 与单组件注册
+- 🎨 **主题变量定制** —— 样式基于 CSS Design Tokens，覆盖变量即换肤，明暗双主题自动联动
+- ⚡ **命令式 API** —— `notice` / `message` / `v-loading` 指令开箱即用，无需在模板中挂载组件
+- ✅ **测试保障** —— Vitest 139 个单元测试全通过
 
-### 中文说明从哪来（规范：单一来源）
+## 安装
 
-**API 表格里的"说明"列 = 组件源码 JSDoc 注释的原文，脚本不做翻译、只做搬运。** 所以要把说明写成什么语言，取决于源码注释写什么语言。
+```bash
+npm install kylin-design-ui
+```
 
-规范约定：**组件所有 prop / emit / type 别名的 JSDoc 注释统一使用中文**，写在「离代码最近」的 `types.ts` 里有对应 prop 的上方（或 tsx 里的行内注释），这样 API 表格自动展示中文、且和代码永远同步，不会出现"改了代码忘了改文档"的漂移。
+## 快速开始
 
-- `types.ts` 的 `interface XxxProps` 里每个字段上方写 `/** 中文说明 */`，脚本优先从这里取描述。
-- 类型别名（如 `ButtonType`）的 JSDoc 也建议中文，便于阅读。
-- 若某 prop 只定义在 tsx 里（未进 `ButtonProps` 接口），则在 tsx 的 prop 上方写行内中文注释。
-- 改完注释后重跑 gen-api 脚本即可刷新 `api-data.ts`。
+### 全量引入
 
+```ts
+// main.ts
+import { createApp } from 'vue'
+import KylinUI from 'kylin-design-ui'
+import 'kylin-design-ui/style.css'
+import App from './App.vue'
+
+createApp(App).use(KylinUI).mount('#app')
+```
+
+### 按需引入
+
+```vue
+<script setup lang="ts">
+import { KButton, KSwitch, notice } from 'kylin-design-ui'
+import 'kylin-design-ui/style.css'
+</script>
+
+<template>
+  <KButton type="primary" @click="notice.success('保存成功')">保存</KButton>
+  <KSwitch v-model="enabled" />
+</template>
+```
+
+## 明星组件：SupTable 超级表格
+
+类 Excel 的可编辑表格：单元格选择与填充柄拖拽、行列增删、列宽自适应、列选中等能力开箱即用。
+
+## 本地开发
+
+```bash
+npm install        # 安装依赖
+npm run dev        # 启动演示站（含安装指南 / 组件总览 / 交互式示例）
+npm run test       # 运行单元测试
+npm run build:lib  # 构建库产物（ESM / UMD / CSS / d.ts）
+```
+
+## 开源协议
+
+[MIT](./LICENSE)
