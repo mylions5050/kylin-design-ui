@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '@/composables/useTheme'
 import KScrollBar from '@/components/scrollbar/index'
@@ -11,8 +11,12 @@ const router = useRouter()
 
 /** 点击侧边栏 Logo 返回全屏落地页 */
 const goHome = () => {
+  sidebarOpen.value = false
   router.push('/')
 }
+
+/** 移动端抽屉式侧边栏开关（≤768px 时侧栏隐藏，由顶栏汉堡按钮唤出） */
+const sidebarOpen = ref(false)
 
 // 导航菜单数据 — 按组件分类，支持二级嵌套
 const menuItems: MenuItem[] = [
@@ -125,6 +129,14 @@ const route = useRoute()
 const { theme, toggleTheme, toggleText, isDark } = useTheme()
 const activePath = computed(() => route.path)
 
+// 路由变化后自动收起抽屉（选中菜单项即进入页面）
+watch(
+  () => route.path,
+  () => {
+    sidebarOpen.value = false
+  },
+)
+
 // 收集所有叶子节点的 path，用于激活判断
 const allLeafPaths = new Set<string>()
 const collectPaths = (items: MenuItem[]) => {
@@ -155,7 +167,13 @@ const pageTitle = computed(() => {
 
 <template>
   <div class="dashboard-layout">
-    <aside class="sidebar">
+    <!-- 移动端遮罩：点击关闭抽屉 -->
+    <div
+      class="sidebar-mask"
+      :class="{ 'is-visible': sidebarOpen }"
+      @click="sidebarOpen = false"
+    />
+    <aside class="sidebar" :class="{ 'is-open': sidebarOpen }">
       <div class="sidebar-logo-wrap" @click="goHome">
         <img class="sidebar-logo" :src="logoUrl" alt="Kylin Design UI" />
         <div class="sidebar-logo-name">
@@ -179,6 +197,14 @@ const pageTitle = computed(() => {
     <div class="main-panel">
       <header class="topbar">
         <div class="topbar__heading">
+          <!-- 移动端汉堡按钮：唤出抽屉式侧边栏 -->
+          <button
+            class="topbar__hamburger"
+            aria-label="打开菜单"
+            @click="sidebarOpen = !sidebarOpen"
+          >
+            <span /><span /><span />
+          </button>
           <div class="topbar__title">{{ pageTitle }}</div>
         </div>
         <button class="theme-toggle" @click="toggleTheme" :title="toggleText">
@@ -218,6 +244,15 @@ const pageTitle = computed(() => {
   height: 100vh;
   overflow: hidden;
   background: var(--k-color-bg);
+}
+
+// 移动端遮罩层
+.sidebar-mask {
+  display: none;
+}
+
+.topbar__hamburger {
+  display: none;
 }
 
 .sidebar {
@@ -391,6 +426,86 @@ const pageTitle = computed(() => {
   :deep(.scrollbar__view) {
     padding: 24px;
     box-sizing: border-box;
+  }
+}
+
+// ---- 移动端适配：侧栏变抽屉 ----
+@media (max-width: 768px) {
+  .sidebar-mask {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: block;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+
+    &.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    width: 260px;
+    max-width: 82vw;
+    background: var(--k-color-bg);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.12);
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+
+  .topbar {
+    padding: 8px 16px;
+
+    &__hamburger {
+      display: flex;
+      flex-shrink: 0;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 8px;
+      cursor: pointer;
+      background: var(--k-color-bg-secondary);
+      border: none;
+      border-radius: var(--k-border-radius);
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: var(--k-color-bg-tertiary);
+      }
+
+      span {
+        display: block;
+        width: 16px;
+        height: 2px;
+        background: var(--k-color-text);
+        border-radius: 1px;
+      }
+    }
+
+    &__title {
+      font-size: 16px;
+    }
+  }
+
+  .content {
+    :deep(.scrollbar__view) {
+      padding: 16px;
+    }
   }
 }
 </style>

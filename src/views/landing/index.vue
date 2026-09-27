@@ -864,6 +864,92 @@ const statCounts = stats.map((s) => useCountUp(s.end))
     grid-row: auto;
   }
 }
+
+// ---- 手机竖屏适配 ----
+@media (max-width: 560px) {
+  .landing-topbar {
+    padding: 0 16px;
+  }
+
+  .landing-hero {
+    padding: 36px 16px 44px;
+
+    &__intro h1 {
+      font-size: 26px;
+    }
+
+    &__intro p {
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+
+    &__actions {
+      flex-wrap: wrap;
+
+      .landing-hero__btn {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+      }
+    }
+
+    // 菱形装饰缩小，避免小屏喧宾夺主
+    &__deco--1 {
+      width: 120px;
+    }
+
+    &__deco--2 {
+      width: 160px;
+    }
+  }
+
+  .landing-body {
+    padding: 0 16px;
+  }
+
+  .landing-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .landing-stats__value {
+    font-size: 24px;
+  }
+
+  .landing-features {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-showcase {
+    margin: 44px 0 40px;
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  // 表格类内容允许横向滚动，不撑破卡片
+  .sup-demo {
+    overflow-x: auto;
+  }
+
+  .landing-collage__item {
+    padding: 16px;
+  }
+
+  .landing-cta {
+    margin-top: 40px;
+    padding: 32px 16px;
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .landing-footer {
+    padding: 20px 16px;
+  }
+}
 </style>
 
 <style lang="scss">

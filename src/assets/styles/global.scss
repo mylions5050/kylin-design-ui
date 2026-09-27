@@ -58,3 +58,16 @@ ol {
   gap: 12px;
   flex-wrap: wrap;
 }
+
+/* ============ 移动端适配（≤768px） ============ */
+@media (max-width: 768px) {
+  /* Demo 演示区允许横向滚动：表格/穿梭框等宽内容在小屏不撑破布局 */
+  .demo-block__body {
+    overflow-x: auto;
+  }
+
+  /* 代码块横向滚动，避免长行撑破 */
+  .demo-block__code pre {
+    overflow-x: auto;
+  }
+}
