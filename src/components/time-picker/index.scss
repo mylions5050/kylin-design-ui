@@ -1,0 +1,99 @@
+.k-time-picker {
+  display: inline-flex;
+  width: 100%;
+  max-width: 220px;
+
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &__input {
+    width: 100%;
+  }
+
+  // hover / 滚动预览：触发框文字以浅灰呈现
+  &.is-previewing .k-input__inner {
+    color: var(--k-color-text-tertiary);
+    font-style: normal;
+  }
+
+  // 时间面板：白底 + 卡片阴影（与 KDatePicker 面板一致），宽 190px、内边距 4px
+  &__panel {
+    width: 190px;
+    background: var(--k-color-bg);
+    border: 1px solid var(--k-color-border-light);
+    border-radius: var(--k-border-radius);
+    box-shadow: var(--k-shadow-overlay);
+    padding: 4px;
+    box-sizing: border-box;
+  }
+
+  // 滚动列容器：横向排布均分（列间距由下方竖线的 margin 提供）
+  &__cols {
+    display: flex;
+  }
+
+  // 单列：时/分/秒宽度一致均分，数字居中
+  &__col {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+
+    // 列与列之间的浅灰竖分割线，左右各留 4px 间距
+    & + & {
+      border-left: 1px solid var(--k-color-border-light);
+      margin-left: 4px;
+      padding-left: 4px;
+    }
+  }
+
+  // 列内滚动主体
+  &__col-body {
+    padding: 4px 0;
+  }
+
+  // 时间项
+  &__item {
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--k-color-text);
+    border-radius: var(--k-border-radius-sm);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    user-select: none;
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    &.is-selected {
+      background: var(--k-color-primary);
+      color: var(--k-color-bg);
+      font-weight: 600;
+
+      &:hover {
+        background: var(--k-color-primary);
+        color: var(--k-color-bg);
+      }
+    }
+
+    // 预览项（hover / 滚动跟随）：浅灰底，区别于已提交的蓝色选中
+    &.is-preview:not(.is-selected) {
+      background: var(--k-color-bg-tertiary);
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  // 底部操作栏：上边框分隔，左侧“此刻”、右侧“确认”两端对齐
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid var(--k-color-border-light);
+  }
+}

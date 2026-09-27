@@ -1,0 +1,10 @@
+.k-time-select {
+  display: inline-flex;
+  width: 100%;
+  max-width: 220px;
+
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

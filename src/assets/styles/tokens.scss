@@ -1,0 +1,239 @@
+// Design tokens — single source of truth for color/spacing/radius/font/z.
+// Naming: `--k-<category>-<name>` (k = kylinUI-compatible). Light theme in
+// :root, dark theme under [data-theme='dark'] for a future theme toggle.
+// New components MUST consume these tokens — don't hardcode hex inline.
+
+:root {
+  // brand colors
+  --k-color-primary: #1677ff;
+  --k-color-success: #22c55e;
+  --k-color-info: #14b8a6;
+  --k-color-warning: #f59e0b;
+  --k-color-error: #ed0442;
+
+  // 品牌主蓝三阶（固定色调，不随明暗主题变化）：blue-1 亮 / blue-2 主 / blue-3 深
+  --k-color-primary-blue-1: #4096ff;
+  --k-color-primary-blue-2: #1677ff;
+  --k-color-primary-blue-3: #0958d9;
+
+  // brand hover
+  --k-color-primary-hover: #4096ff;
+  --k-color-primary-active: #0958d9;
+  --k-color-success-hover: #1fb454;
+  --k-color-info-hover: #119c8d;
+  --k-color-warning-hover: #d08609;
+  --k-color-error-hover: #c90338;
+
+  // brand light (plain bg + disabled bg share these)
+  --k-color-primary-light: #e6f4ff;
+  --k-color-success-light: #dcfce7;
+  --k-color-info-light: #cbefeb;
+  --k-color-warning-light: #fdeac9;
+  --k-color-error-light: #ffdce2;
+
+  // brand light hover
+  --k-color-primary-light-hover: #bae0ff;
+  --k-color-success-light-hover: #f0fdf4;
+  --k-color-info-light-hover: #def5f3;
+  --k-color-warning-light-hover: #fef1dd;
+  --k-color-error-light-hover: #fff1f2;
+
+  // brand plain text (dark variant on light bg)
+  --k-color-success-plain-text: #15803d;
+  --k-color-info-plain-text: #0d776c;
+  --k-color-warning-plain-text: #77500d;
+  --k-color-error-plain-text: #b00735;
+
+  // text
+  --k-color-text: #3c4b62;
+  --k-color-text-secondary: #6a7e9c;
+  --k-color-text-tertiary: #90a5c5;
+  --k-color-text-placeholder: #9aa4b0;
+  --k-color-text-disabled: #97a4b5;
+
+  // background
+  --k-color-bg: #fff;
+  --k-color-bg-secondary: #fafbfc;
+  --k-color-bg-tertiary: #f0f5fc;
+  --k-color-bg-page: #f7f9fc;
+  --k-color-bg-selected: #f2faff;
+
+  // border
+  --k-color-border: #d3ddec;
+  --k-color-border-light: #f0f5fc;
+  --k-color-border-table: #e5e6eb;
+  --k-color-border-summary: #d4deec;
+
+  // table specific
+  --k-color-bg-hover: #f9fafd;
+  --k-color-row-success: #e6f9ed;
+  --k-color-row-info: #e6f2fb;
+  --k-color-row-warning: #fff7e6;
+  --k-color-row-danger: #fdecec;
+  --k-color-highlight: #0078bd;
+  --k-color-summary-bg: #f4f7fb;
+  --k-color-skeleton-1: #eef3fa;
+  --k-color-skeleton-2: #e2eaf6;
+
+  // disabled
+  --k-color-default-disabled: #bbcbe4;
+  --k-color-bg-disabled: #f5f7fa;
+  --k-color-border-disabled: #d3ddec;
+
+  // radius
+  --k-border-radius-sm: 4px;
+  --k-border-radius: 8px;
+  --k-border-radius-lg: 16px;
+
+  // panel 尺寸 → padding 语义（KCard / KDialog 共用，避免两套 size 映射漂移）
+  --k-panel-padding-sm: 12px 16px;
+  --k-panel-padding-default: 20px;
+  --k-panel-padding-lg: 28px 32px;
+
+  // font
+  --k-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
+  --k-font-size-sm: 12px;
+  --k-font-size: 14px;
+  --k-font-size-lg: 16px;
+
+  // z-index
+  --k-z-index: 2000;
+  --k-z-index-modal: 2000;
+  --k-z-index-tooltip: 2001;
+
+  // overlay
+  --k-color-mask: rgba(0, 0, 0, 0.45);
+
+  // shadows
+  --k-color-shadow: rgba(100, 116, 139, 0.15);
+  // --k-color-shadow-linear-gradient: linear-gradient(
+  //   to right,
+  //   rgba(100, 116, 139, 0.15),
+  //   rgba(60, 75, 98, 0)
+  // );
+
+  // 反馈浮层阴影（message / notice / alert / tooltip / popover 等统一使用）。
+  // 浅色略高于卡片；暗色下更不透明、扩散更强，让浮层从深色背景清晰浮起。
+  --k-shadow-overlay: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  // 细微凸起阴影（内联 banner 如 alert 的 light 形态，比浮层更浅）。
+  --k-shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+
+  // code block 高亮配色（hljs token -> 语义变量）。
+  // 由 DemoBlock 消费，暗色值见下方 [data-theme='dark'] 覆盖。
+  --k-code-bg: #f0f5fc;
+  --k-code-text: #3c4b62;
+  --k-code-keyword: #0a96e6;
+  --k-code-string: #02613b;
+  --k-code-comment: #90a5c5;
+  --k-code-number: #c0792a;
+  --k-code-tag: #e2195d;
+  --k-code-class: #7b3fbf;
+
+  // grid
+  --k-grid-row-gap: 24px;
+
+  // input (sizes: 40, 32, 28)
+  --k-input-font-size-small: 12px;
+  --k-input-font-size-large: 16px;
+  --k-input-height-large: 40px;
+  --k-input-height-small: 28px;
+  --k-input-padding-large: 0 16px;
+  --k-input-padding-small: 0 8px;
+}
+
+[data-theme='dark'] {
+  --k-color-primary: #1668dc;
+  --k-color-success: rgba(134, 224, 170, 0.85);
+  --k-color-info: rgba(119, 214, 203, 0.85);
+  --k-color-warning: rgba(249, 199, 113, 0.85);
+  --k-color-error: rgba(242, 79, 123, 0.85);
+
+  --k-color-primary-hover: #3c89e8;
+  --k-color-success-hover: rgba(109, 199, 143, 0.85);
+  --k-color-info-hover: rgba(99, 195, 184, 0.85);
+  --k-color-warning-hover: rgba(235, 178, 86, 0.85);
+  --k-color-error-hover: rgba(225, 52, 95, 0.85);
+
+  // 暗色浅底：半透明白，自然融合暗背景
+  --k-color-primary-light: #1f2b3d;
+  --k-color-success-light: rgba(255, 255, 255, 0.06);
+  --k-color-info-light: rgba(255, 255, 255, 0.06);
+  --k-color-warning-light: rgba(255, 255, 255, 0.06);
+  --k-color-error-light: rgba(255, 255, 255, 0.06);
+
+  --k-color-primary-light-hover: #2a3a55;
+  --k-color-success-light-hover: rgba(255, 255, 255, 0.04);
+  --k-color-info-light-hover: rgba(255, 255, 255, 0.04);
+  --k-color-warning-light-hover: rgba(255, 255, 255, 0.04);
+  --k-color-error-light-hover: rgba(255, 255, 255, 0.04);
+
+  // 暗色 plain-text：用浅亮色保证暗底可读
+  --k-color-success-plain-text: #b8e8c8;
+  --k-color-info-plain-text: #c2efe9;
+  --k-color-warning-plain-text: #ffe0b5;
+  --k-color-error-plain-text: #ffc2cf;
+
+  --k-color-text: #e4e6ea;
+  --k-color-text-secondary: #a8b3c2;
+  --k-color-text-tertiary: #6b7688;
+  --k-color-text-placeholder: #6b7688;
+  --k-color-text-disabled: #4a5568;
+
+  --k-color-bg: #1a1d23;
+  --k-color-bg-secondary: #21252b;
+  --k-color-bg-tertiary: #2a303c;
+  --k-color-bg-page: #1a1d23;
+  --k-color-bg-selected: #1e3a8a;
+
+  --k-color-border: #374151;
+  --k-color-border-light: #2a303c;
+  --k-color-border-table: #374151;
+  --k-color-border-summary: #4b5563;
+
+  --k-color-bg-hover: #2d3748;
+  --k-color-row-success: #064e3b;
+  --k-color-row-info: #1e3a8a;
+  --k-color-row-warning: #92400e;
+  --k-color-row-danger: #7f1d1d;
+  --k-color-highlight: #60a5fa;
+  --k-color-summary-bg: #374151;
+  --k-color-skeleton-1: #374151;
+  --k-color-skeleton-2: #4b5563;
+
+  --k-color-default-disabled: #4a5568;
+  --k-color-bg-disabled: #21252b;
+  --k-color-border-disabled: #374151;
+
+  --k-color-mask: rgba(0, 0, 0, 0.8);
+
+  --k-color-shadow: rgba(0, 0, 0, 0.1);
+  --k-color-shadow-linear-gradient: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.1),
+    transparent
+  );
+
+  // 反馈浮层阴影（暗色）：更深的黑色、更大扩散，从深色背景清晰浮起
+  --k-shadow-overlay: 0 4px 20px 0 rgba(0, 0, 0, 0.5);
+  // 细微凸起阴影（暗色）
+  --k-shadow-subtle: 0 1px 4px 0 rgba(0, 0, 0, 0.35);
+
+  // code block 高亮配色（暗色）
+  --k-code-bg: #21252b;
+  --k-code-text: #e4e6ea;
+  --k-code-keyword: #58a6ff;
+  --k-code-string: #7ddb8a;
+  --k-code-comment: #6b7688;
+  --k-code-number: #f0a85b;
+  --k-code-tag: #ff7b91;
+  --k-code-class: #c39dff;
+
+  // input (sizes: 40, 32, 28)
+  --k-input-font-size-small: 12px;
+  --k-input-font-size-large: 16px;
+  --k-input-height-large: 40px;
+  --k-input-height-small: 28px;
+  --k-input-padding-large: 0 16px;
+  --k-input-padding-small: 0 8px;
+}

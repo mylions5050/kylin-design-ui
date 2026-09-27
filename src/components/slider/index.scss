@@ -1,0 +1,156 @@
+/* ======================================
+   KSlider 滑动输入条（交互对齐 Ant Design Slider）
+   ====================================== */
+.k-slider {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 0;
+
+  /* 有刻度标记时，底部预留标签空间 */
+  &.is-has-marks {
+    padding-bottom: 34px;
+  }
+
+  &__rail {
+    position: relative;
+    height: 4px;
+    background: var(--k-slider-rail-color, var(--k-color-border-light));
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  &__track {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: var(--k-slider-color, var(--k-color-primary));
+    border-radius: 2px;
+  }
+
+  /* step 刻度点 / marks 刻度点 */
+  &__dot {
+    position: absolute;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    background: var(--k-color-bg);
+    border: 2px solid var(--k-color-border-light);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+
+    /* 已选区间内的刻度点高亮 */
+    &.is-active {
+      border-color: var(--k-slider-color, var(--k-color-primary));
+    }
+  }
+
+  &__handle {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    width: 14px;
+    height: 14px;
+    background: var(--k-color-bg);
+    border: 2px solid var(--k-slider-color, var(--k-color-primary));
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &.is-active {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--k-slider-color, var(--k-color-primary)) 25%, transparent);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--k-slider-color, var(--k-color-primary)) 25%, transparent);
+    }
+
+    /* 单独禁用的滑块（disabled 为数组时）：作为移动边界存在 */
+    &.is-disabled {
+      border-color: var(--k-color-border-disabled);
+      cursor: not-allowed;
+    }
+  }
+
+  /* marks 标签：位于轨道下方，点击可定位 */
+  &__mark {
+    position: absolute;
+    top: 22px;
+    transform: translateX(-50%);
+    color: var(--k-color-text-secondary);
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color: var(--k-slider-color, var(--k-color-primary));
+    }
+  }
+
+  /* ===== 垂直模式：需外部给根元素设置高度 ===== */
+  &.is-vertical {
+    display: inline-block;
+    width: auto;
+    padding: 0 12px;
+
+    &.is-has-marks {
+      padding-right: 44px;
+      padding-bottom: 0;
+    }
+
+    .k-slider__rail {
+      width: 4px;
+      height: 100%;
+      margin: 0 auto;
+    }
+
+    .k-slider__track {
+      top: auto;
+      left: 50%;
+      width: 4px;
+      transform: translateX(-50%);
+    }
+
+    .k-slider__dot,
+    .k-slider__handle {
+      left: 50%;
+    }
+
+    .k-slider__mark {
+      left: calc(50% + 12px);
+      transform: translateY(-50%);
+    }
+  }
+
+  /* ===== 禁用 ===== */
+  &.is-disabled {
+    cursor: not-allowed;
+
+    .k-slider__rail {
+      cursor: not-allowed;
+    }
+
+    .k-slider__track {
+      background: var(--k-color-border);
+    }
+
+    .k-slider__handle {
+      border-color: var(--k-color-border-disabled);
+      cursor: not-allowed;
+    }
+
+    .k-slider__mark {
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+
+      &:hover {
+        color: var(--k-color-text-disabled);
+      }
+    }
+  }
+}

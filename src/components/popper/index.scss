@@ -1,0 +1,134 @@
+/* ============================================
+   KPopper — 基础弹出面板
+   ============================================ */
+
+.k-popper {
+  position: fixed;
+  box-sizing: border-box;
+
+  // ─── 箭头 ──────────────────────────────────
+  &__arrow {
+    position: absolute;
+    width: var(--popper-arrow-size, 10px);
+    height: var(--popper-arrow-size, 10px);
+    transform: rotate(45deg);
+    border: 1px solid transparent;
+    pointer-events: none;
+  }
+
+  // ─── 12 placement 箭头定位 ────────────────
+
+  &--top &__arrow {
+    bottom: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    left: calc(50% + var(--popper-arrow-offset-x, 0px) - var(--popper-arrow-size, 10px) / 2);
+  }
+  &--top-start &__arrow {
+    bottom: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    left: calc(var(--popper-arrow-size, 10px) + 4px);
+  }
+  &--top-end &__arrow {
+    bottom: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    right: calc(var(--popper-arrow-size, 10px) + 4px);
+    left: auto;
+  }
+
+  &--bottom &__arrow {
+    top: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    left: calc(50% + var(--popper-arrow-offset-x, 0px) - var(--popper-arrow-size, 10px) / 2);
+  }
+  &--bottom-start &__arrow {
+    top: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    left: calc(var(--popper-arrow-size, 10px) + 4px);
+  }
+  &--bottom-end &__arrow {
+    top: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    right: calc(var(--popper-arrow-size, 10px) + 4px);
+    left: auto;
+  }
+
+  &--left &__arrow {
+    right: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    top: calc(50% + var(--popper-arrow-offset-y, 0px) - var(--popper-arrow-size, 10px) / 2);
+  }
+  &--left-start &__arrow {
+    right: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    top: calc(var(--popper-arrow-size, 10px) + 4px);
+  }
+  &--left-end &__arrow {
+    right: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    bottom: calc(var(--popper-arrow-size, 10px) + 4px);
+    top: auto;
+  }
+
+  &--right &__arrow {
+    left: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    top: calc(50% + var(--popper-arrow-offset-y, 0px) - var(--popper-arrow-size, 10px) / 2);
+  }
+  &--right-start &__arrow {
+    left: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    top: calc(var(--popper-arrow-size, 10px) + 4px);
+  }
+  &--right-end &__arrow {
+    left: calc(-1 * var(--popper-arrow-size, 10px) / 2);
+    bottom: calc(var(--popper-arrow-size, 10px) + 4px);
+    top: auto;
+  }
+}
+
+/* ============================================
+   动画：zoom-fade（缩放 + 淡入）
+   参考 Ant Design 风格，用于 Tooltip/Popover
+   ============================================ */
+
+.k-popper-zoom-fade-enter-active,
+.k-popper-zoom-fade-leave-active {
+  transition:
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.k-popper-zoom-fade-enter-from,
+.k-popper-zoom-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+.k-popper-zoom-fade-enter-to,
+.k-popper-zoom-fade-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 面板内部设置 transform-origin */
+.k-popper-zoom-fade-panel {
+  transform-origin: var(--popper-origin, top center);
+}
+
+/* ============================================
+   动画：slide-fade（滑动 + 淡入）
+   参考 Ant Design 风格，用于 Select Dropdown
+   ============================================ */
+
+.k-popper-slide-fade-enter-active,
+.k-popper-slide-fade-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.k-popper-slide-fade-enter-from,
+.k-popper-slide-fade-leave-to {
+  opacity: 0;
+  transform: scaleY(0.92) translateY(-6px);
+}
+
+.k-popper-slide-fade-enter-to,
+.k-popper-slide-fade-leave-from {
+  opacity: 1;
+  transform: scaleY(1) translateY(0);
+}
+
+/* 面板内部设置 transform-origin */
+.k-popper-slide-fade-panel {
+  transform-origin: var(--popper-origin, top center);
+}

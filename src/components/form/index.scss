@@ -1,0 +1,143 @@
+.k-form {
+  // 间距用容器 gap 收敛（不摊给每个 item 的 margin-bottom），可用 --k-form-gap 定制
+  display: flex;
+  flex-direction: column;
+  gap: var(--k-form-gap, 20px);
+
+  // 表单项
+  // 对齐策略同 EP：item 默认 stretch，label 固定 32px（与单行控件等高）——
+  // 单行控件时文字自然垂直居中；textarea/穿梭框等高组件时 label 停在左上角
+  &__item {
+    display: flex;
+    font-size: 14px;
+
+    // 校验错误状态：常见控件边框着色
+    &.is-error {
+      .k-input__inner,
+      .k-select__trigger {
+        border-color: var(--k-color-error);
+      }
+    }
+
+    &.is-disabled {
+      opacity: 0.6;
+      // 整体禁用：阻断鼠标交互（原生 disabled 需各控件 inject formContext，后续演进）
+      pointer-events: none;
+    }
+  }
+
+  &__label {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding-right: 12px;
+    color: var(--k-color-text);
+    box-sizing: border-box;
+  }
+
+  &__asterisk {
+    color: var(--k-color-error);
+
+    /* 星号在标签前（left / top）或后（right）时用 margin 撑开间距，
+       文本空格在 inline-flex 容器里会被折叠 */
+    &--before {
+      margin-right: 4px;
+    }
+
+    &--after {
+      margin-left: 4px;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    // 同 EP：row + center，radio/checkbox 等矮控件垂直居中，按钮等固有宽度控件不被拉伸；
+    // 宽度型控件 width 100% 照常占满；textarea/穿梭框等高组件撑开行高，label 停在左上角
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 32px;
+
+    // 宽度型控件默认撑满内容区（labelWidth 决定表单整体宽度节奏）
+    .k-input,
+    .k-select,
+    .k-input-number,
+    .k-date-picker {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  &__error {
+    // 同 EP：错误信息悬浮在 content 下方，不占布局流，不挤压相邻 item
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding-top: 2px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--k-color-error);
+  }
+
+  // 标签在上
+  &--top {
+    .k-form__item {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .k-form__label {
+      height: auto;
+      padding: 0 0 6px;
+      justify-content: flex-start;
+    }
+  }
+
+  // 标签左对齐（水平）
+  &--left {
+    .k-form__label {
+      justify-content: flex-start;
+    }
+  }
+
+  // 标签右对齐（水平，默认）
+  &--right {
+    .k-form__label {
+      justify-content: flex-end;
+    }
+  }
+
+  // 行内布局
+  &--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+
+    .k-form__item {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .k-form__label {
+      height: auto;
+      padding-right: 8px;
+    }
+
+    // 行内时内容区不再抢占剩余空间，宽度型控件收为固定宽度，多个字段才能排到同一行
+    .k-form__content {
+      flex: 0 0 auto;
+
+      .k-input,
+      .k-select,
+      .k-input-number,
+      .k-date-picker {
+        width: 220px;
+        max-width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,549 @@
+
+
+/* ======================================
+   KSelect - 基于 KInput 实现的轻量级选择器
+   ====================================== */
+.k-select {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  max-width: var(--k-input-max-width, 300px);
+  cursor: pointer; /* Indicate clickable dropdown toggle */
+  /* 
+  KInput can handle most styling, we just need to:
+  1. Allow the wrapper to respond to clicks for dropdown toggle
+  2. Ensure text color is light gray when there's a selected value
+  */
+  .k-input {
+      width: 100%;
+      cursor: pointer!important;
+      .k-input__wrapper {
+          .k-input__inner {
+              color: #606266 !important; /* Light gray text color */
+              cursor: pointer !important;
+          }
+      }
+  }
+  
+  /* ===== 禁用 / 只读 ===== */
+  &.is-disabled {
+    cursor: not-allowed;
+    
+    .k-input {
+      background: var(--k-color-bg-disabled);
+      border-color: var(--k-color-border-disabled);
+      
+      .k-input__inner {
+        color: var(--k-color-text-disabled);
+        cursor: not-allowed;
+        background: transparent;
+      }
+    }
+  }
+
+  &.is-readonly {
+    cursor: default;
+    
+    .k-input {
+      background: transparent;
+      
+      .k-input__inner {
+        cursor: default;
+        user-select: none;
+      }
+      
+      &:hover {
+        border-color: var(--k-color-primary);
+      }
+      
+      &.is-focused {
+        border-color: var(--k-color-primary);
+        box-shadow: 0 0 0 2px var(--k-color-primary-light);
+      }
+    }
+  }
+
+  
+  /* ===== 多选样式 ===== */
+  &.is-multiple {
+    .k-select-input {
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+      background: var(--k-color-bg);
+    }
+
+    .k-select-tags-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .k-select-tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      box-sizing: border-box;
+    }
+
+    .k-select-tag {
+      max-width: 100%;
+      flex-shrink: 0;
+    }
+
+    .k-select-input-inner {
+      border: none;
+      width: 100%;
+      min-width: 30px;
+      flex: 1;
+      
+      .k-input__wrapper {
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 2px 8px;
+        
+        &:focus-within,
+        &:hover {
+          box-shadow: none;
+        }
+      }
+      
+      .k-input__inner {
+        background: transparent;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        color: var(--k-color-text);
+        
+        &::placeholder {
+          color: var(--k-color-text-placeholder);
+        }
+      }
+    }
+
+    .k-select__tags-text {
+      display: inline-flex;
+      background: var(--k-color-bg-secondary);
+      border-radius: 12px;
+      padding: 0 8px;
+      font-size: 12px;
+      color: var(--k-color-text-secondary);
+      font-weight: 500;
+      height: 20px;
+      line-height: 20px;
+      cursor: default;
+      user-select: none;
+    }
+
+    .k-select-suffix {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .k-select__clear {
+      color: var(--k-color-text-disabled);
+      cursor: pointer;
+      font-size: 14px;
+
+      &:hover {
+        color: var(--k-color-text-secondary);
+      }
+    }
+
+    .k-select__caret {
+      color: var(--k-color-text-disabled);
+      font-size: 14px;
+      transition: transform 0.3s;
+      
+      &.is-open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+
+}
+
+// 🎯 Arrow rotation with inline style approach
+.k-select .k-input__suffix .icon-arrow-down {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block !important;
+}
+
+.k-select-dropdown-wrapper {
+  pointer-events: auto;
+}
+
+// Dropdown container
+.k-select-dropdown {
+  background: var(--k-color-bg);
+  border: 1px solid var(--k-color-border);
+  border-radius: var(--k-border-radius);
+  box-shadow: var(--k-shadow-overlay);
+  overflow: hidden;
+}
+
+.k-select-dropdown__content {
+  padding: 4px 0;
+}
+
+// Dropdown items
+
+
+.k-select-dropdown__item {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+
+  
+  &:hover:not(.is-disabled) {
+    background: var(--k-color-primary-light);
+  }
+  
+  &.is-highlight {
+    background: var(--k-color-primary-light);
+  }
+  
+  &.is-selected {
+    // 浅灰色文字 - 类似 ElementPlus 的选中效果
+    color: #606266;
+    font-weight: 500;
+    background: var(--k-color-bg-selected);
+  }
+  
+  &.is-disabled {
+    color: var(--k-color-text-disabled);
+    cursor: not-allowed;
+    
+    &:hover {
+      background: transparent; // 禁用状态不下拉项不响应hover
+    }
+  }
+}
+
+
+
+
+.k-select-item__selected-icon {
+  font-size: 14px;
+  color: var(--k-color-primary);
+  margin-left: 8px; /* 与文本保持适当间距 */
+  flex-shrink: 0; /* 防止图标被压缩 */
+}
+
+// 确保多选模式下选项的文字能够占用正确空间
+.k-select-dropdown__item {
+  .k-select-item__selected-icon + *,
+  * + .k-select-item__selected-icon {
+    margin-left: 8px;
+  }
+}
+
+
+
+// Ensure tooltip wrapper doesn't affect layout
+.k-select-dropdown__content .tooltip {
+  display: block;
+  width: 100%;
+}
+
+.k-select-dropdown__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 12px;
+  font-size: 13px;
+  color: var(--k-color-text-placeholder);
+  text-align: center;
+
+  .k-select-dropdown__empty-icon {
+    font-size: 36px;
+    color: var(--k-color-text-placeholder);
+  }
+}
+
+// Group styling
+.k-select-dropdown__group {
+  & + & {
+    border-top: 1px solid var(--k-color-border-light);
+  }
+  
+  .k-select-dropdown__group-label {
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--k-color-text-secondary);
+    font-weight: 500;
+    background: var(--k-color-bg-secondary);
+  }
+  
+  .k-select-dropdown__group-options {
+    .k-select-dropdown__item {
+      padding-left: 16px;
+    }
+  }
+}
+
+// 多选模式下无选中值时的input包装器样式
+.k-select-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--k-color-border);
+  border-radius: var(--k-border-radius);
+  padding: 0; /* 移除外层padding，让内部input控制 */
+  min-height: 32px;
+  background: var(--k-color-bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: var(--k-color-primary);
+  }
+
+  &.select-dropdown-visible,
+  &:focus-within {
+    border-color: var(--k-color-primary);
+    box-shadow: 0 0 0 2px var(--k-color-primary-light);
+  }
+
+  .k-input {
+    flex: 1;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    
+    .k-input__wrapper {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      
+      &:hover,
+      &:focus-within {
+        box-shadow: none !important;
+      }
+    }
+    
+    .k-input__inner {
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      cursor: pointer !important;
+      
+      &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+
+  .k-select__clear {
+    color: var(--k-color-text-disabled);
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 4px;
+
+    &:hover {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  .k-select__caret {
+    color: var(--k-color-text-disabled);
+    font-size: 14px;
+    transition: transform 0.3s;
+    
+    &.is-open {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Size variations
+  .k-select.is-multiple & {
+    padding: 0 12px 0 0;
+    
+    &.k-select-input--small {
+      min-height: 28px;
+      padding: 0 12px 0 0;
+    }
+    
+    &.k-select-input--large {
+      min-height: 36px;
+      padding: 0 12px 0 0;
+    }
+  }
+}
+
+
+
+
+// 多选输入框容器基础样式
+
+
+.k-select-input--multiple {
+  border: 1px solid var(--k-color-border);
+  border-radius: var(--k-border-radius);
+  font-size: 14px;
+  min-height: 32px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  background: var(--k-color-bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+
+
+
+  &:hover {
+    border-color: var(--k-color-primary);
+  }
+
+  &.select-dropdown-visible,
+  &:focus-within {
+    border-color: var(--k-color-primary);
+    box-shadow: 0 0 0 2px var(--k-color-primary-light);
+  }
+
+  &[aria-disabled="true"] {
+    background: var(--k-color-bg-disabled);
+    border-color: var(--k-color-border-disabled);
+    cursor: not-allowed;
+
+    .k-select-multiple-input {
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+    }
+
+    .k-select-tag {
+      opacity: 0.7;
+    }
+  }
+
+  &.k-select-input--small {
+    min-height: 28px;
+    font-size: 12px;
+    
+    .k-select-tags {
+      padding: 1px 6px;
+    }
+
+    .k-select-multiple-input {
+      font-size: 12px;
+      height: 16px;
+      line-height: 16px;
+    }
+  }
+
+  &.k-select-input--large {
+    min-height: 36px;
+    font-size: 16px;
+    
+    .k-select-tags {
+      padding: 3px 10px;
+    }
+
+    .k-select-multiple-input {
+      font-size: 16px;
+      height: 20px;
+      line-height: 20px;
+    }
+  }
+}
+
+
+// ================== 后缀图标（统一旋转规则）==================
+.k-select__caret {
+  color: var(--k-color-text-disabled);
+  font-size: 14px;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.is-open {
+    transform: rotate(180deg);
+  }
+}
+
+// ================== Element Plus Style Search Input ==================
+
+// Search input wrapper - Element Plus style
+.k-select__input-wrapper {
+  display: inline-flex;
+  flex: 1;
+  min-width: 30px;
+  height: 24px;
+  vertical-align: middle;
+  position: relative;
+}
+
+// Search input following Element Plus design
+.k-select__input {
+  width: 100%;
+  height: 24px;
+  line-height: 24px;
+  padding: 0 4px;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--k-color-text);
+  font-size: 14px;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.k-select__input::placeholder {
+  color: var(--k-color-text-placeholder);
+}
+
+.k-select__input:disabled {
+  cursor: not-allowed;
+  color: var(--k-color-text-disabled);
+}
+
+.k-select__input:focus {
+  outline: none;
+}
+
+.k-select__input:read-only {
+  cursor: pointer;
+}
+
+// Responsive sizes
+.k-select-input--small .k-select__input {
+  font-size: 12px;
+  height: 16px;
+  line-height: 16px;
+}
+
+.k-select-input--large .k-select__input {
+  font-size: 16px;
+  height: 20px;
+  line-height: 20px;
+}
+
+// Hidden state like Element Plus
+.k-select__input-wrapper.is-hidden {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}

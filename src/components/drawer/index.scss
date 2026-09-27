@@ -1,0 +1,174 @@
+/* ============ KDrawer：面板贴边定位 + 滑入滑出动画 ============ */
+
+.k-drawer {
+  &__wrapper {
+    position: absolute; /* 相对 KOverlay（fixed 全屏）贴边定位 */
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: var(--k-drawer-bg, var(--k-color-bg));
+    box-shadow: var(--k-drawer-shadow, -6px 0 16px 0 rgba(0, 0, 0, 0.08));
+    outline: none;
+    z-index: 1;
+
+    /* push 推开位移的过渡常驻（AntD content-wrapper 同款）：
+       过渡只挂在 .is-pushed 上时，关闭上层会把它和 transform 同帧一起移除，
+       变更后样式里没有 transition 属性，回弹就会瞬间跳变；
+       常驻后被推/回弹两个方向都平滑。
+       enter/leave 期间 Transition 的 active class 过渡同名同值，不冲突 */
+    transition: transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+
+    /* 四个方向贴边（厚度由 inline style 的 width/height 控制） */
+    &.is-right {
+      top: 0;
+      right: 0;
+      bottom: 0;
+    }
+    &.is-left {
+      top: 0;
+      left: 0;
+      bottom: 0;
+    }
+    &.is-top {
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    &.is-bottom {
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    /* 阴影方向随 placement 翻转 */
+    &.is-left {
+      box-shadow: var(--k-drawer-shadow, 6px 0 16px 0 rgba(0, 0, 0, 0.08));
+    }
+    &.is-top {
+      box-shadow: var(--k-drawer-shadow, 0 6px 16px 0 rgba(0, 0, 0, 0.08));
+    }
+    &.is-bottom {
+      box-shadow: var(--k-drawer-shadow, 0 -6px 16px 0 rgba(0, 0, 0, 0.08));
+    }
+
+    /* ---------- 面板滑入滑出（Vue Transition 原生类，EP 同款） ---------- */
+    /* 起止由真实 transitionend 判定；EP 同款缓动：起步稳、收尾极缓，
+       入场出场同为 0.3s（EP Drawer 默认） */
+    &.k-drawer-slide-right-enter-active,
+    &.k-drawer-slide-right-leave-active {
+      transition: transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+    }
+    &.k-drawer-slide-right-enter-from,
+    &.k-drawer-slide-right-leave-to {
+      transform: translateX(100%);
+    }
+
+    &.k-drawer-slide-left-enter-active,
+    &.k-drawer-slide-left-leave-active {
+      transition: transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+    }
+    &.k-drawer-slide-left-enter-from,
+    &.k-drawer-slide-left-leave-to {
+      transform: translateX(-100%);
+    }
+
+    &.k-drawer-slide-top-enter-active,
+    &.k-drawer-slide-top-leave-active {
+      transition: transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+    }
+    &.k-drawer-slide-top-enter-from,
+    &.k-drawer-slide-top-leave-to {
+      transform: translateY(-100%);
+    }
+
+    &.k-drawer-slide-bottom-enter-active,
+    &.k-drawer-slide-bottom-leave-active {
+      transition: transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+    }
+    &.k-drawer-slide-bottom-enter-from,
+    &.k-drawer-slide-bottom-leave-to {
+      transform: translateY(100%);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+    padding: var(--k-drawer-header-padding, 16px 24px);
+    border-bottom: var(--k-drawer-header-border, 1px solid var(--k-color-border-light));
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--k-color-text);
+    line-height: 24px;
+  }
+
+  &__header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--k-color-text-tertiary);
+    cursor: pointer;
+    border-radius: var(--k-border-radius-sm);
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+      color: var(--k-color-text);
+    }
+  }
+
+  /* main 区域：grid 1fr + relative 定位，承载 KScroll 与局部 loading */
+  &__main {
+    position: relative;
+    min-height: 0;
+    min-width: 0;
+  }
+
+  /* body 区域 — grid 的 1fr 自动撑满剩余空间，KScroll 接管滚动 */
+  &__body {
+    height: 100%;
+    overflow: hidden;
+
+    .scrollbar {
+      height: 100%;
+    }
+
+    .scrollbar__wrap {
+      height: 100%;
+    }
+
+    font-size: 14px;
+    color: var(--k-color-text);
+    line-height: 22px;
+  }
+
+  &__body-content {
+    padding: var(--k-drawer-body-padding, 24px);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
+    padding: var(--k-drawer-footer-padding, 12px 24px);
+    border-top: var(--k-drawer-footer-border, 1px solid var(--k-color-border-light));
+  }
+}

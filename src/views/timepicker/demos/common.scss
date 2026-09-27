@@ -1,0 +1,28 @@
+.demo-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.demo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  label {
+    min-width: 120px;
+    font-size: 14px;
+    color: var(--k-color-text-secondary);
+    flex-shrink: 0;
+  }
+
+  :deep(.k-time-picker) {
+    width: 180px;
+  }
+
+  .event-log {
+    font-family: monospace;
+    color: var(--k-color-primary);
+    font-size: 14px;
+  }
+}

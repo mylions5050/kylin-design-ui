@@ -1,0 +1,31 @@
+// `iconfont.css` (imported from the component tsx) provides the @font-face and
+// the `.icon-{name}:before { content }` glyphs. This file layers the k-icon
+// layout + font-family on top — we don't apply iconfont's `.iconfont` base
+// class, so that k-icon controls sizing (font-size inherits; `size` overrides)
+// instead of iconfont's hardcoded 16px.
+
+.k-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'iconfont';
+  font-style: normal;
+  line-height: 1;
+  vertical-align: middle;
+  // font-size inherits from surrounding text — pass the `size` prop to override.
+  // color inherits (currentColor) → icons follow surrounding text color by default.
+
+  // Figma SVG branch: inline svg sized by font-size (1em). Do NOT set
+  // `fill: currentColor` here — it would override a root `fill="none"` (CSS
+  // beats the presentation attribute) and fill hollow shapes, e.g. an info
+  // icon's ring would become a solid disk and hide the "i". SVGs render
+  // exactly as authored; to make one follow the `color` prop, set its
+  // fills/strokes to `currentColor` inside the SVG itself.
+  &.k-icon--svg {
+    svg {
+      width: 1em;
+      height: 1em;
+      display: block;
+    }
+  }
+}

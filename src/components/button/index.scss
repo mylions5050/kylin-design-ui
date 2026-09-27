@@ -1,0 +1,382 @@
+// Button variant mixin: defines bg/border/text for a given type plus its hover state.
+// $bg-var: CSS variable for normal background (e.g. --k-color-primary)
+// $bg-hover-var: CSS variable for hover background (e.g. --k-color-primary-hover)
+// $border-var: CSS variable for border color (or use $bg-var)
+// $color-var: CSS variable for text color (or use $bg-var)
+@mixin button-variant($bg-var, $bg-hover-var: null, $border-var: null, $color-var: --k-color-bg) {
+  $border: if($border-var, $border-var, $bg-var);
+  $bg: $bg-var;
+  background: var($bg);
+  border-color: var($border);
+  color: var($color-var);
+
+  $bg-hover: if($bg-hover-var, $bg-hover-var, $bg-var);
+  &:hover {
+    background: var($bg-hover);
+    border-color: var(if($border-var, $border-var, $bg-hover));
+    color: var($color-var);
+  }
+}
+
+.k-btn {
+  // inline-flex：多个按钮可横排展示（不各占一行）；内部图标+文字仍 flex 对齐
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  height: 32px;
+  border: 1px solid transparent;
+  border-radius: var(--k-border-radius);
+  background: var(--k-color-primary);
+  color: var(--k-color-bg);
+  cursor: pointer;
+  font-family: var(--k-font-family);
+  font-size: var(--k-font-size);
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+
+  &.is-disabled,
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  // disabled per type: washed-out bg
+  // Unified high‑specificity disabled state block.
+  // Restores your original per-type disabled color design without !important.
+  // Higher-specificity selectors for interactive disabled state.
+  // No !important, just a more specific selector than the base variant rules.
+  &.k-btn--default.is-disabled,
+  &.k-btn--default:disabled {
+    background: var(--k-color-default-disabled);
+    border-color: var(--k-color-default-disabled);
+    color: var(--k-color-bg);
+  }
+  &.k-btn--primary.is-disabled,
+  &.k-btn--primary:disabled {
+    background: var(--k-color-primary-light);
+    border-color: var(--k-color-primary-light);
+    color: var(--k-color-bg);
+  }
+  &.k-btn--success.is-disabled,
+  &.k-btn--success:disabled {
+    background: var(--k-color-success-light);
+    border-color: var(--k-color-success-light);
+    color: var(--k-color-bg);
+  }
+  &.k-btn--info.is-disabled,
+  &.k-btn--info:disabled {
+    background: var(--k-color-info-light);
+    border-color: var(--k-color-info-light);
+    color: var(--k-color-bg);
+  }
+  &.k-btn--warning.is-disabled,
+  &.k-btn--warning:disabled {
+    background: var(--k-color-warning-light);
+    border-color: var(--k-color-warning-light);
+    color: var(--k-color-bg);
+  }
+  &.k-btn--error.is-disabled,
+  &.k-btn--error:disabled {
+    background: var(--k-color-error-light);
+    border-color: var(--k-color-error-light);
+    color: var(--k-color-bg);
+  }
+  // disabled dark: gray
+  &.is-disabled.is-dark,
+  &:disabled.is-dark {
+    background: var(--k-color-border);
+    border-color: var(--k-color-border);
+    color: var(--k-color-text-disabled);
+  }
+
+  &.is-round {
+    border-radius: 9999px;
+  }
+
+  &.is-circle {
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+  }
+
+  // 纯正方形按钮：精简样式，无内边距/间距，固定边长（默认 20px，可用 width/height 覆盖）
+  &.is-square {
+    flex: none;
+    padding: 0;
+    gap: 0;
+    border-radius: var(--k-border-radius-sm);
+
+    // 垂直/水平居中内容，必要时裁剪以保持正方形
+    overflow: hidden;
+
+    // 仍可叠加圆角（round 变为完全圆形外观）
+    &.is-round {
+      border-radius: 50%;
+    }
+  }
+
+  &.is-loading {
+    cursor: progress;
+  }
+
+  &--large {
+    height: 40px;
+    padding: 0 22px;
+
+    &.is-circle {
+      width: 44px;
+      height: 44px;
+    }
+  }
+
+  &--middle {
+    height: 32px;
+    padding: 0 16px;
+
+    &.is-circle {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &--small {
+    height: 28px;
+    padding: 0 12px;
+    font-size: var(--k-font-size-sm);
+
+    &.is-circle {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &--mini {
+    height: 24px;
+    padding: 0 10px;
+    font-size: var(--k-font-size-sm);
+
+    &.is-circle {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &--default {
+    background: var(--k-color-bg);
+    border-color: var(--k-color-border);
+    color: var(--k-color-text);
+
+    &:hover {
+      color: var(--k-color-primary);
+      border-color: var(--k-color-primary);
+      background: var(--k-color-primary-light);
+    }
+  }
+
+  &--primary {
+    @include button-variant(
+      --k-color-primary,
+      --k-color-primary-hover,
+      --k-color-primary,
+      --k-color-bg
+    );
+  }
+
+  &--success {
+    @include button-variant(
+      --k-color-success,
+      --k-color-success-hover,
+      --k-color-success,
+      --k-color-bg
+    );
+  }
+
+  &--info {
+    @include button-variant(--k-color-info, --k-color-info-hover, --k-color-info, --k-color-bg);
+  }
+
+  &--warning {
+    @include button-variant(
+      --k-color-warning,
+      --k-color-warning-hover,
+      --k-color-warning,
+      --k-color-bg
+    );
+  }
+
+  &--error {
+    @include button-variant(--k-color-error, --k-color-error-hover, --k-color-error, --k-color-bg);
+  }
+
+  // plain: light bg, dark text per color, hover bg slightly deeper
+  &.is-plain {
+    &.k-btn--default {
+      background: var(--k-color-bg);
+      border-color: var(--k-color-border);
+      color: var(--k-color-text);
+
+      &:hover {
+        background: var(--k-color-bg-tertiary);
+      }
+    }
+
+    &.k-btn--primary {
+      background: var(--k-color-primary-light);
+      border-color: var(--k-color-primary-light);
+      color: var(--k-color-primary);
+
+      &:hover {
+        background: var(--k-color-primary-light-hover);
+      }
+    }
+
+    &.k-btn--success {
+      background: var(--k-color-success-light);
+      border-color: var(--k-color-success-light);
+      color: var(--k-color-success);
+
+      &:hover {
+        background: var(--k-color-success-light-hover);
+      }
+    }
+
+    &.k-btn--info {
+      background: var(--k-color-info-light);
+      border-color: var(--k-color-info-light);
+      color: var(--k-color-info);
+
+      &:hover {
+        background: var(--k-color-info-light-hover);
+      }
+    }
+
+    &.k-btn--warning {
+      background: var(--k-color-warning-light);
+      border-color: var(--k-color-warning-light);
+      color: var(--k-color-warning);
+
+      &:hover {
+        background: var(--k-color-warning-light-hover);
+      }
+    }
+
+    &.k-btn--error {
+      background: var(--k-color-error-light);
+      border-color: var(--k-color-error-light);
+      color: var(--k-color-error);
+
+      &:hover {
+        background: var(--k-color-error-light-hover);
+      }
+    }
+  }
+
+  // text: transparent bg, hover light bg in the type's own light color
+  &.is-text {
+    background: transparent;
+    border-color: transparent;
+    color: var(--k-color-text);
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    &.k-btn--primary {
+      color: var(--k-color-primary);
+
+      &:hover {
+        background: var(--k-color-primary-light);
+      }
+    }
+
+    &.k-btn--success {
+      color: var(--k-color-success);
+
+      &:hover {
+        background: var(--k-color-success-light);
+      }
+    }
+
+    &.k-btn--info {
+      color: var(--k-color-info);
+
+      &:hover {
+        background: var(--k-color-info-light);
+      }
+    }
+
+    &.k-btn--warning {
+      color: var(--k-color-warning);
+
+      &:hover {
+        background: var(--k-color-warning-light);
+      }
+    }
+
+    &.k-btn--error {
+      color: var(--k-color-error);
+
+      &:hover {
+        background: var(--k-color-error-light);
+      }
+    }
+  }
+
+  // link: transparent bg, hover underline
+  &.is-link {
+    background: transparent;
+    border-color: transparent;
+    color: var(--k-color-primary);
+    text-decoration: none;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.k-btn--default {
+      color: var(--k-color-text);
+    }
+
+    &.k-btn--success {
+      color: var(--k-color-success);
+    }
+
+    &.k-btn--info {
+      color: var(--k-color-info);
+    }
+
+    &.k-btn--warning {
+      color: var(--k-color-warning);
+    }
+
+    &.k-btn--error {
+      color: var(--k-color-error);
+    }
+  }
+
+  &__loading {
+    width: 12px;
+    height: 12px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: k-btn-spin 0.6s linear infinite;
+  }
+}
+
+@keyframes k-btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

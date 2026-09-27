@@ -1,0 +1,205 @@
+.pagination {
+  display: flex;
+  height: 52px;
+  padding: 0 20px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-top: 1px solid var(--k-color-border);
+  background: var(--k-color-bg);
+
+  // 小尺寸：按钮 24px、行高收紧，适合表格、穿梭框等紧凑场景
+  &--small {
+    height: 40px;
+    padding: 0 12px;
+
+    .pagination__btn.k-btn {
+      height: 24px;
+      width: 24px;
+      font-size: 12px;
+    }
+
+    .pagination__btn--nav.k-btn {
+      width: 24px;
+    }
+
+    .pagination__ellipsis {
+      width: 24px;
+      line-height: 24px;
+      font-size: 12px;
+    }
+
+    .pagination__summary {
+      font-size: 12px;
+    }
+
+    .pagination__size-changer {
+      width: 90px;
+    }
+
+    // 极简模式 + small：输入框同步收紧
+    .pagination__simple-input .k-input {
+      height: 24px;
+    }
+  }
+
+  &__summary {
+    color: var(--k-color-text-secondary);
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    white-space: nowrap; // 窄面板下防止 summary 换行
+  }
+
+  &__ellipsis {
+    width: 32px;
+    text-align: center;
+    color: var(--k-color-text-tertiary);
+    font-size: 14px;
+    user-select: none;
+    line-height: 32px;
+    flex-shrink: 0;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    // 箭头按钮组：按钮之间无间距，靠在一起
+    .pagination__arrow-group {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    // KButton 形态覆盖：方形 32、padding 归零、字重 500
+    .pagination__btn.k-btn {
+      width: 32px;
+      padding: 0;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .pagination__btn svg {
+      width: 12px;
+      height: 12px;
+      display: block;
+    }
+
+    // 数字按钮 hover：保留 KButton 的边框/文字变 primary，去掉 primary-light 背景填充
+    .pagination__btn.k-btn--default:hover:not(.is-active):not([disabled]) {
+      background: var(--k-color-bg);
+    }
+
+    // 选中页码：primary 底白字，hover 保持
+    .pagination__btn.is-active {
+      background: var(--k-color-primary);
+      border-color: var(--k-color-primary);
+      color: var(--k-color-bg);
+
+      &:hover {
+        background: var(--k-color-primary);
+        border-color: var(--k-color-primary);
+        color: var(--k-color-bg);
+      }
+    }
+
+    // 导航按钮：透明无边框，hover 仅图标变 primary
+    .pagination__btn--nav.k-btn {
+      border: none;
+      background: transparent;
+      flex-shrink: 0;
+
+      &:hover:not([disabled]) {
+        background: transparent;
+        border-color: transparent;
+        color: var(--k-color-primary);
+      }
+    }
+
+    // 边界禁用
+    .pagination__btn.is-inactive,
+    .pagination__btn[disabled] {
+      opacity: 0.4;
+    }
+
+    // 覆盖 KButton 的 disabled 白色文字，导航按钮用灰色
+    .pagination__btn--nav.k-btn[disabled] {
+      color: var(--k-color-text-disabled) !important;
+      background: transparent !important;
+      border-color: transparent !important;
+    }
+  }
+
+  // 每页条数切换器容器，限制 KSelect 宽度
+  &__size-changer {
+    width: 100px;
+    flex-shrink: 0;
+
+    .k-select {
+      width: 100%;
+    }
+
+    .k-input {
+      width: 100%;
+    }
+  }
+
+  // ============ 极简模式：「< [页码输入框] / 总页数 >」 ============
+  &--simple {
+    height: auto;
+    padding: 0;
+    justify-content: center;
+    gap: 8px;
+    border-top: none;
+    background: transparent;
+  }
+
+  // 页码输入框容器：限宽 40px，KInput 撑满并收窄内边距、文字居中
+  &__simple-input {
+    width: 40px;
+    flex-shrink: 0;
+
+    .k-input {
+      width: 100%;
+      max-width: none;
+      height: 28px;
+      padding: 0 4px;
+    }
+
+    .k-input__inner {
+      padding: 0;
+      text-align: center;
+    }
+  }
+
+  &__simple-sep,
+  &__simple-total {
+    color: var(--k-color-text-secondary);
+    font-size: 14px;
+    line-height: 28px;
+    user-select: none;
+  }
+
+  // 极简模式下的导航箭头：32px 透明按钮，复用导航按钮的视觉
+  &--simple .pagination__btn--nav.k-btn {
+    border: none;
+    background: transparent;
+    width: 28px;
+    padding: 0;
+    flex-shrink: 0;
+
+    &:hover:not([disabled]) {
+      color: var(--k-color-primary);
+    }
+
+    &.is-inactive,
+    &[disabled] {
+      opacity: 0.4;
+      color: var(--k-color-text-disabled) !important;
+    }
+  }
+}

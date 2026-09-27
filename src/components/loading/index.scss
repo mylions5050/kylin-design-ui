@@ -1,0 +1,175 @@
+.k-loading {
+  /* 基于 KOverlay 的 fixed 全屏遮罩，居中内容 */
+  /* color 由组件的 activeColor（type 语义色或自定义 color）注入，子元素用 currentColor 继承 */
+
+  &__mask {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    /* jsx 注入 style.color = activeColor，菊花与文字用 currentColor 随它变色 */
+  }
+
+  /* ========== spinner：双弧咬合（外弧伸缩旋转，弧长呼吸；内弧反向旋转，颜色减淡）
+   * 外弧周长 2πr≈125.6，dasharray 总长恒为 126，伸缩时无跳变 ========== */
+  &__spinner {
+    display: inline-block;
+  }
+
+  &__spinner-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  &__spinner-arc {
+    transform-origin: center;
+    animation:
+      k-loading-spin 1.4s cubic-bezier(0.5, 0.15, 0.5, 0.85) infinite,
+      k-loading-arc-stretch 1.4s ease-in-out infinite;
+  }
+
+  &__spinner-inner {
+    transform-origin: center;
+    animation: k-loading-spin-reverse 1.4s linear infinite;
+  }
+
+  @keyframes k-loading-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes k-loading-spin-reverse {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+
+  @keyframes k-loading-arc-stretch {
+    0% {
+      stroke-dasharray: 12 114;
+    }
+    50% {
+      stroke-dasharray: 92 34;
+    }
+    100% {
+      stroke-dasharray: 12 114;
+    }
+  }
+
+  /* ========== arc：经典弧线追逐（Element Plus 风格）
+   * 整体 svg 匀速旋转（2s 一圈），弧线自身长度与相位同时变化（1.6s）：
+   * 从一个小点拉长为长弧、尾巴继续追赶，形成“追逐”观感 ========== */
+  &__spinner-svg.is-rotating {
+    transform-origin: center;
+    animation: k-loading-spin 2s linear infinite;
+  }
+
+  &__spinner-growth {
+    animation: k-loading-arc-dash 1.6s ease-in-out infinite;
+  }
+
+  @keyframes k-loading-arc-dash {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -40;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -120;
+    }
+  }
+
+  /* ========== circle：圆点脉冲（6 颗圆点绕轨道依次胀缩 + 渐显，波峰绕圈传播） ========== */
+  &__circle {
+    position: relative;
+    animation: k-loading-spin 2.4s linear infinite;
+  }
+
+  &__dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22%;
+    height: 22%;
+    border-radius: 50%;
+    background-color: currentColor; /* 颜色随 mask 的 color */
+    /* 先用负 margin 让点的中心与圆心重合 */
+    margin: -11% 0 0 -11%;
+    /* 绕圆心 rotate 到对应角度，再沿半径外移；胀缩在移动后的位置上叠加 */
+    transform: rotate(var(--dot-rotate, 0deg)) translateY(calc(-1 * var(--radius, 16px))) scale(0.7);
+    transform-origin: center;
+    animation: k-loading-dot-pulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes k-loading-dot-pulse {
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: rotate(var(--dot-rotate, 0deg)) translateY(calc(-1 * var(--radius, 16px))) scale(0.7);
+    }
+    50% {
+      opacity: 1;
+      transform: rotate(var(--dot-rotate, 0deg)) translateY(calc(-1 * var(--radius, 16px))) scale(1.05);
+    }
+  }
+
+  /* ========== 底部文案：随 type 颜色 ========== */
+  &__text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: currentColor; /* 随 mask 的 color（type 语义色）；可被插槽/自定义 class 覆盖 */
+  }
+
+  /* ========== 自定义图标 / 图片 / 任意内容（#default 插槽） ========== */
+  &__custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  /* ========== 自定义 svg ========== */
+  &__icon {
+    display: inline-block;
+    line-height: 1;
+  }
+
+  /* ========== 明暗主题：文字/菊花随 type 语义色，不自动改白（除非用户自定义 color/样式） ========== */
+  &--dark &__text,
+  &--light &__text {
+    color: currentColor; /* 跟随 mask 的 color（type 色）；用户可传 color 或用自定义 class 覆盖 */
+  }
+
+  /* ========== local 局部分块模式 ========== */
+  &__local {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 1000;
+    pointer-events: auto;
+  }
+}
+
+/* local 淡入淡出 */
+.k-loading-local-fade-enter-active,
+.k-loading-local-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.k-loading-local-fade-enter-from,
+.k-loading-local-fade-leave-to {
+  opacity: 0;
+}

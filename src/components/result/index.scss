@@ -1,0 +1,48 @@
+.k-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  box-sizing: border-box;
+  text-align: center;
+
+  &__icon {
+    line-height: 1;
+    /* 四种语义状态色（iconfont 图标用 currentColor） */
+    color: var(--k-color-info);
+
+    &.is-success {
+      color: var(--k-color-success);
+    }
+    &.is-warning {
+      color: var(--k-color-warning);
+    }
+    &.is-error {
+      color: var(--k-color-error);
+    }
+  }
+
+  &__title {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--k-color-text);
+  }
+
+  &__subtitle {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--k-color-text-secondary);
+  }
+
+  &__extra {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+}

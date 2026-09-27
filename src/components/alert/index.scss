@@ -1,0 +1,196 @@
+@use 'sass:list';
+
+// type token map: (文字/icon 强调色, 背景色)
+$types: (
+  'primary': (
+    var(--k-color-primary),
+    var(--k-color-primary-light),
+  ),
+  'info': (
+    var(--k-color-info),
+    var(--k-color-info-light),
+  ),
+  'warning': (
+    var(--k-color-warning),
+    var(--k-color-warning-light),
+  ),
+  'success': (
+    var(--k-color-success),
+    var(--k-color-success-light),
+  ),
+  'error': (
+    var(--k-color-error),
+    var(--k-color-error-light),
+  ),
+);
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
+  border-radius: 16px;
+  box-sizing: border-box;
+
+  &--mini {
+    padding: 8px 16px;
+    min-height: 32px;
+  }
+
+  &--small {
+    padding: 10px 24px 10px 16px;
+    min-height: 38px;
+  }
+
+  &--medium {
+    padding: 12px 32px 12px 24px;
+    min-height: 44px;
+  }
+
+  &--large {
+    padding: 15px 32px 15px 24px;
+    min-height: 52px;
+  }
+
+  // type 配色：彩色背景 + 文字色随 type（核心变化，原统一 #3C4B62）
+  @each $type, $values in $types {
+    $color: list.nth($values, 1);
+    $bg: list.nth($values, 2);
+
+    &--#{$type} {
+      background: $bg;
+      color: $color;
+    }
+  }
+
+  // dark=false（light）：主题背景色 + subtle elevation shadow，文字色仍随 type
+  &--light {
+    background: var(--k-color-bg);
+    box-shadow: var(--k-shadow-subtle);
+  }
+
+  // effect: custom（无type背景）：主题背景色 + type 描边 + type 文字色，无 type 色背景
+  &--custom {
+    background: var(--k-color-bg);
+    box-shadow: none;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  &--border {
+    border-width: 1px;
+    border-style: solid;
+    box-shadow: none;
+  }
+
+  &--center {
+    justify-content: center;
+
+    .alert__content {
+      flex: 0 1 auto;
+      text-align: center;
+    }
+  }
+
+  // 深色背景（effect=dark）：使用调整后的主题色 + 适配的文字色
+  &--dark {
+    color: var(--k-color-bg);
+  }
+
+  &--dark.alert--primary {
+    background: var(--k-color-primary);
+  }
+
+  &--dark.alert--info {
+    background: var(--k-color-info);
+  }
+
+  &--dark.alert--warning {
+    background: var(--k-color-warning);
+  }
+
+  &--dark.alert--success {
+    background: var(--k-color-success);
+  }
+
+  &--dark.alert--error {
+    background: var(--k-color-error);
+  }
+
+  // border 色 = type 浅色
+  &--primary {
+    border-color: var(--k-color-primary-light);
+  }
+
+  &--info {
+    border-color: var(--k-color-info-light);
+  }
+
+  &--success {
+    border-color: var(--k-color-success-light);
+  }
+
+  &--warning {
+    border-color: var(--k-color-warning-light);
+  }
+
+  &--error {
+    border-color: var(--k-color-error-light);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+    // color 继承自 .alert--{type}，文字色随类型
+  }
+
+  // 标题 + 描述样式 class（图3 两行式，供 slot 内调用方使用）
+  &__title {
+    font-weight: 600;
+  }
+
+  &__description {
+    font-weight: 400;
+  }
+
+  &__action {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    // stroke 用 currentColor，跟随 type 文字色
+  }
+
+  &__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    // stroke 用 currentColor，跟随 type 文字色
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

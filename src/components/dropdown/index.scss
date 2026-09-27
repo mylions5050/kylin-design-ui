@@ -1,0 +1,74 @@
+.k-dropdown {
+  display: inline-block;
+
+  &.is-disabled {
+    cursor: not-allowed;
+  }
+
+  &__menu {
+    min-width: 120px;
+    padding: 4px;
+    background: var(--k-color-bg);
+    border-radius: var(--k-border-radius);
+    box-shadow: var(--k-shadow-overlay);
+  }
+
+  /* overlay 插槽自定义面板：内容自己排版，容器给舒适的内边距 */
+  &__menu--overlay {
+    min-width: 0;
+    padding: 12px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border-radius: var(--k-border-radius-sm);
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--k-color-text);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    &-icon {
+      font-size: 14px;
+      color: var(--k-color-text-secondary);
+    }
+
+    &.is-danger {
+      color: var(--k-color-error);
+
+      .k-dropdown__item-icon {
+        color: var(--k-color-error);
+      }
+
+      &:hover {
+        background: var(--k-color-error-light);
+      }
+    }
+
+    &.is-disabled {
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+
+      .k-dropdown__item-icon {
+        color: var(--k-color-text-disabled);
+      }
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    &.is-divided {
+      margin-top: 4px;
+      border-top: 1px solid var(--k-color-border-light);
+      padding-top: 9px;
+    }
+  }
+}

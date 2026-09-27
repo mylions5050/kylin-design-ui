@@ -1,0 +1,55 @@
+// 容器：方框 + 标签（default 插槽）。无标签时只显方框。
+.k-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  vertical-align: middle;
+  user-select: none;
+  outline: none;
+
+  &:hover:not(.is-disabled) .k-checkbox__box {
+    border-color: var(--k-color-primary);
+  }
+
+  &:focus-visible .k-checkbox__box {
+    border-color: var(--k-color-primary);
+    box-shadow: 0 0 0 2px var(--k-color-primary-light);
+  }
+
+  &.is-disabled {
+    cursor: not-allowed;
+  }
+}
+
+// 方框：边框 + 内嵌 KIcon（select-bold / minus-bold，currentColor 跟随 color）
+.k-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--k-color-border);
+  border-radius: var(--k-border-radius-sm);
+  background: var(--k-color-bg);
+  // 选中/半选时方框填色，图标用白色（currentColor 跟随）
+  color: var(--k-color-bg);
+  box-sizing: border-box;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.k-checkbox.is-checked .k-checkbox__box,
+.k-checkbox.is-indeterminate .k-checkbox__box {
+  background: var(--k-color-primary);
+  border-color: var(--k-color-primary);
+}
+
+.k-checkbox.is-disabled .k-checkbox__box {
+  background: var(--k-color-bg-tertiary);
+  border-color: var(--k-color-border);
+}
+
+.k-checkbox.is-disabled.is-checked .k-checkbox__box,
+.k-checkbox.is-disabled.is-indeterminate .k-checkbox__box {
+  background: var(--k-color-default-disabled);
+  border-color: var(--k-color-default-disabled);
+}

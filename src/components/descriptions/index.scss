@@ -1,0 +1,143 @@
+.k-descriptions {
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    color: var(--k-color-text);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 23px;
+  }
+
+  &__extra {
+    color: var(--k-color-text-secondary);
+    font-size: 14px;
+    line-height: 23px;
+  }
+
+  &__view {
+    display: grid;
+  }
+
+  &__label {
+    color: var(--k-color-text-secondary);
+    font-size: 14px;
+    line-height: 23px;
+
+    /* 冒号：伪元素追加 */
+    &.is-colon::after {
+      content: ':';
+      margin-left: 1px;
+    }
+  }
+
+  &__content {
+    min-width: 0;
+    color: var(--k-color-text);
+    font-size: 14px;
+    line-height: 23px;
+    /* 订单号等长无空格字符串在窄列内也能断行，避免撑破单元格 */
+    overflow-wrap: anywhere;
+  }
+
+  /* ============ 水平布局（无边框）：行距列距由单元格内边距承担 ============ */
+  &:not(&--bordered):not(&--vertical) {
+    .k-descriptions__label {
+      padding-right: 8px;
+      padding-bottom: 8px;
+    }
+
+    .k-descriptions__content {
+      padding-right: 16px;
+      padding-bottom: 8px;
+    }
+  }
+
+  &--middle:not(&--bordered):not(&--vertical) {
+    .k-descriptions__label,
+    .k-descriptions__content {
+      padding-bottom: 12px;
+    }
+  }
+
+  /* ============ 垂直布局：item 为块级单元格，标签在内容上方 ============ */
+  &--vertical {
+    .k-descriptions__item {
+      min-width: 0;
+      display: block;
+      padding-right: 16px;
+      padding-bottom: 8px;
+    }
+
+    .k-descriptions__content {
+      margin-top: 2px;
+    }
+  }
+
+  &--vertical.k-descriptions--middle:not(&--bordered) {
+    .k-descriptions__item {
+      padding-bottom: 12px;
+    }
+  }
+
+  /* ============ 带边框：标签列浅色背景加粗 + 单元格边框（Element Plus 同款 8px 11px） ============ */
+  &--bordered {
+    .k-descriptions__view {
+      border-top: 1px solid var(--k-color-border);
+      border-left: 1px solid var(--k-color-border);
+    }
+
+    .k-descriptions__label {
+      background: var(--k-color-bg-secondary);
+      border-right: 1px solid var(--k-color-border);
+      border-bottom: 1px solid var(--k-color-border);
+      padding: 8px 11px;
+      font-weight: 700;
+      color: var(--k-color-text);
+    }
+
+    .k-descriptions__content {
+      border-right: 1px solid var(--k-color-border);
+      border-bottom: 1px solid var(--k-color-border);
+      padding: 8px 11px;
+    }
+
+    /* 垂直 + 带边框：单元格是 item 块，标签在上内容在下，用下边框分隔 */
+    &.k-descriptions--vertical {
+      .k-descriptions__item {
+        border-right: 1px solid var(--k-color-border);
+        border-bottom: 1px solid var(--k-color-border);
+        padding: 0;
+      }
+
+      .k-descriptions__label {
+        border-right: none;
+        border-bottom: 1px solid var(--k-color-border);
+      }
+
+      .k-descriptions__content {
+        border-right: none;
+        margin-top: 0;
+      }
+    }
+
+    /* 带边框时的尺寸内边距 */
+    &.k-descriptions--middle {
+      .k-descriptions__label,
+      .k-descriptions__content {
+        padding: 12px 11px;
+      }
+    }
+
+    &.k-descriptions--small {
+      .k-descriptions__label,
+      .k-descriptions__content {
+        padding: 8px 9px;
+      }
+    }
+  }
+}

@@ -1,0 +1,180 @@
+// 全局尺寸系统
+// 用于统一所有组件的尺寸标准，便于后续组件开发和维护
+
+// 基础尺寸单位（px）
+$size-small: 28px;
+$size-default: 32px;
+$size-large: 40px;
+
+// Input输入框尺寸
+$input-height-small: $size-small;
+$input-height-default: $size-default;
+$input-height-large: $size-large;
+
+$input-padding-small: 0 8px;
+$input-padding-default: 0 12px;
+$input-padding-large: 0 16px;
+
+$input-font-size-small: 12px;
+$input-font-size-default: 14px;
+$input-font-size-large: 16px;
+
+// Button按钮尺寸
+$button-height-small: $size-small;
+$button-height-default: $size-default;
+$button-height-large: $size-large;
+
+$button-padding-small: 0 16px;
+$button-padding-default: 0 20px;
+$button-padding-large: 0 24px;
+
+$button-font-size-small: 12px;
+$button-font-size-default: 14px;
+$button-font-size-large: 16px;
+
+// Tag标签尺寸
+$tag-height-small: 20px;
+$tag-height-default: 24px;
+$tag-height-large: 32px;
+
+$tag-padding-small: 0 8px;
+$tag-padding-default: 0 12px;
+$tag-padding-large: 0 16px;
+
+$tag-font-size: 12px; // Tag通常保持统一的字体大小
+
+// Radio单选框尺寸
+$radio-size-small: 14px;
+$radio-size-default: 16px;
+$radio-size-large: 18px;
+
+$radio-dot-size-small: 6px;
+$radio-dot-size-default: 8px;
+$radio-dot-size-large: 10px;
+
+// Checkbox复选框尺寸
+$checkbox-size-small: 14px;
+$checkbox-size-default: 16px;
+$checkbox-size-large: 18px;
+
+// Switch开关尺寸
+$switch-width-small: 36px;
+$switch-width-default: 44px;
+$switch-width-large: 52px;
+
+$switch-height-small: 20px;
+$switch-height-default: 24px;
+$switch-height-large: 28px;
+
+// Select选择器尺寸
+$select-height-small: $size-small;
+$select-height-default: $size-default;
+$select-height-large: $size-large;
+
+// Form表单组件通用高度
+$form-component-height-small: $size-small;
+$form-component-height-default: $size-default;
+$form-component-height-large: $size-large;
+
+// 导出CSS变量供组件使用
+:root {
+  // Input输入框
+  --k-input-height-small: #{$input-height-small};
+  --k-input-height-default: #{$input-height-default};
+  --k-input-height-large: #{$input-height-large};
+  
+  --k-input-padding-small: #{$input-padding-small};
+  --k-input-padding-default: #{$input-padding-default};
+  --k-input-padding-large: #{$input-padding-large};
+  
+  --k-input-font-size-small: #{$input-font-size-small};
+  --k-input-font-size-default: #{$input-font-size-default};
+  --k-input-font-size-large: #{$input-font-size-large};
+  
+  // Button按钮
+  --k-button-height-small: #{$button-height-small};
+  --k-button-height-default: #{$button-height-default};
+  --k-button-height-large: #{$button-height-large};
+  
+  --k-button-padding-small: #{$button-padding-small};
+  --k-button-padding-default: #{$button-padding-default};
+  --k-button-padding-large: #{$button-padding-large};
+  
+  --k-button-font-size-small: #{$button-font-size-small};
+  --k-button-font-size-default: #{$button-font-size-default};
+  --k-button-font-size-large: #{$button-font-size-large};
+  
+  // Tag标签
+  --k-tag-height-small: #{$tag-height-small};
+  --k-tag-height-default: #{$tag-height-default};
+  --k-tag-height-large: #{$tag-height-large};
+  
+  --k-tag-padding-small: #{$tag-padding-small};
+  --k-tag-padding-default: #{$tag-padding-default};
+  --k-tag-padding-large: #{$tag-padding-large};
+  
+  --k-tag-font-size: #{$tag-font-size};
+  
+  // Radio单选框
+  --k-radio-size-small: #{$radio-size-small};
+  --k-radio-size-default: #{$radio-size-default};
+  --k-radio-size-large: #{$radio-size-large};
+  
+  --k-radio-dot-size-small: #{$radio-dot-size-small};
+  --k-radio-dot-size-default: #{$radio-dot-size-default};
+  --k-radio-dot-size-large: #{$radio-dot-size-large};
+  
+  // Form表单通用
+  --k-form-component-height-small: #{$form-component-height-small};
+  --k-form-component-height-default: #{$form-component-height-default};
+  --k-form-component-height-large: #{$form-component-height-large};
+}
+
+// 混入宏，便于组件中使用
+@mixin component-size($type, $size) {
+  @if $type == "input" {
+    @if $size == "small" {
+      height: var(--k-input-height-small);
+      font-size: var(--k-input-font-size-small);
+      padding: var(--k-input-padding-small);
+    } @else if $size == "large" {
+      height: var(--k-input-height-large);
+      font-size: var(--k-input-font-size-large);
+      padding: var(--k-input-padding-large);
+    } @else {
+      height: var(--k-input-height-default);
+      font-size: var(--k-input-font-size-default);
+      padding: var(--k-input-padding-default);
+    }
+  }
+  
+  @if $type == "button" {
+    @if $size == "small" {
+      height: var(--k-button-height-small);
+      font-size: var(--k-button-font-size-small);
+      padding: var(--k-button-padding-small);
+    } @else if $size == "large" {
+      height: var(--k-button-height-large);
+      font-size: var(--k-button-font-size-large);
+      padding: var(--k-button-padding-large);
+    } @else {
+      height: var(--k-button-height-default);
+      font-size: var(--k-button-font-size-default);
+      padding: var(--k-button-padding-default);
+    }
+  }
+  
+  @if $type == "tag" {
+    @if $size == "small" {
+      height: var(--k-tag-height-small);
+      padding: var(--k-tag-padding-small);
+    } @else if $size == "large" {
+      height: var(--k-tag-height-large);
+      padding: var(--k-tag-padding-large);
+    } @else {
+      height: var(--k-tag-height-default);
+      padding: var(--k-tag-padding-default);
+    }
+    font-size: var(--k-tag-font-size);
+  }
+}

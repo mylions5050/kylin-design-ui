@@ -1,0 +1,137 @@
+.tooltip {
+  display: inline-block;
+}
+
+.tooltip__panel {
+  position: fixed;
+  z-index: 2200;
+  max-width: 320px;
+  padding: var(--tt-pad, 12px 16px);
+  border-radius: var(--tt-radius, 12px);
+  font-family: var(--Font-Family-Roboto, Roboto);
+  font-size: var(--tt-font, 13px);
+  line-height: var(--line-height-316, 16px);
+  letter-spacing: var(--Letter-Spacing-Regular, 0.25px);
+  word-break: break-word;
+  backdrop-filter: blur(var(--tt-blur, 20px));
+  -webkit-backdrop-filter: blur(var(--tt-blur, 20px));
+  box-shadow: var(--k-shadow-overlay);
+
+  /* 三角：正方形旋转 */
+  &::after {
+    content: '';
+    position: absolute;
+    width: var(--tt-tail, 10px);
+    height: var(--tt-tail, 10px);
+    transform: rotate(45deg);
+    border: 1px solid transparent;
+  }
+
+  /* ===== 居中方向 ===== */
+  &--top::after {
+    bottom: calc(-1 * var(--tt-tail-half, 5px));
+    left: calc(50% + var(--arrow-offset, 0px) - var(--tt-tail-half, 5px));
+  }
+
+  &--bottom::after {
+    top: calc(-1 * var(--tt-tail-half, 5px));
+    left: calc(50% + var(--arrow-offset, 0px) - var(--tt-tail-half, 5px));
+  }
+
+  &--left::after {
+    right: calc(-1 * var(--tt-tail-half, 5px));
+    top: calc(50% + var(--arrow-offset-y, 0px) - var(--tt-tail-half, 5px));
+  }
+
+  &--right::after {
+    left: calc(-1 * var(--tt-tail-half, 5px));
+    top: calc(50% + var(--arrow-offset-y, 0px) - var(--tt-tail-half, 5px));
+  }
+
+  /* ===== 12 placement ===== */
+  &--top-start::after {
+    bottom: calc(-1 * var(--tt-tail-half, 5px));
+    left: calc(var(--tt-tail, 10px) + 4px);
+  }
+  &--top-end::after {
+    bottom: calc(-1 * var(--tt-tail-half, 5px));
+    right: calc(var(--tt-tail, 10px) + 4px);
+    left: auto;
+  }
+
+  &--bottom-start::after {
+    top: calc(-1 * var(--tt-tail-half, 5px));
+    left: calc(var(--tt-tail, 10px) + 4px);
+  }
+  &--bottom-end::after {
+    top: calc(-1 * var(--tt-tail-half, 5px));
+    right: calc(var(--tt-tail, 10px) + 4px);
+    left: auto;
+  }
+
+  &--left-start::after {
+    right: calc(-1 * var(--tt-tail-half, 5px));
+    top: calc(var(--tt-tail, 10px) + 4px);
+  }
+  &--left-end::after {
+    right: calc(-1 * var(--tt-tail-half, 5px));
+    bottom: calc(var(--tt-tail, 10px) + 4px);
+    top: auto;
+  }
+
+  &--right-start::after {
+    left: calc(-1 * var(--tt-tail-half, 5px));
+    top: calc(var(--tt-tail, 10px) + 4px);
+  }
+  &--right-end::after {
+    left: calc(-1 * var(--tt-tail-half, 5px));
+    bottom: calc(var(--tt-tail, 10px) + 4px);
+    top: auto;
+  }
+
+  /* ===== Size ===== */
+  &--small {
+    --tt-pad: 8px 12px;
+    --tt-radius: 8px;
+    --tt-font: 12px;
+    --tt-blur: 14px;
+    --tt-tail: 8px;
+    --tt-tail-half: 4px;
+  }
+
+  &--middle {
+    --tt-pad: 12px 16px;
+    --tt-radius: 12px;
+    --tt-font: 13px;
+    --tt-blur: 20px;
+    --tt-tail: 10px;
+    --tt-tail-half: 5px;
+  }
+
+  &--large {
+    --tt-pad: 16px;
+    --tt-radius: 16px;
+    --tt-font: 14px;
+    --tt-blur: 27.5px;
+    --tt-tail: 12px;
+    --tt-tail-half: 6px;
+  }
+
+  /* ===== Themes（关键点）===== */
+  &--light {
+    background: rgba(255, 255, 255, 1);
+    color: var(--k-color-text-secondary);
+    font-weight: 700;
+  }
+  &--light::after {
+    background: rgba(255, 255, 255, 1);
+  }
+
+  &--dark {
+    background: rgba(28, 36, 51, 1);
+    color: rgba(255, 255, 255, 1);
+  }
+  &--dark::after {
+    background: rgba(28, 36, 51, 1);
+  }
+}

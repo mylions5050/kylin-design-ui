@@ -1,0 +1,141 @@
+.k-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 8px 0;
+  list-style: none;
+  margin: 0;
+  box-sizing: border-box;
+
+  // ─── 单个菜单项 ────────────────────────────────
+  &__item {
+    position: relative;
+    display: flex;
+    padding: 12px 12px 12px 16px;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    min-height: 46px;
+    box-sizing: border-box;
+    border-radius: var(--k-border-radius);
+    text-decoration: none;
+    color: var(--k-color-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    width: 100%;
+    text-align: left;
+
+    // 左侧激活条
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      border-radius: var(--k-border-radius-sm);
+      background: var(--k-menu-bar-color, var(--k-color-primary));
+      height: 0;
+      transition: height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    &:hover:not(.is-disabled) {
+      background: var(--k-color-bg-selected);
+      color: var(--k-color-primary);
+    }
+
+    &.is-active {
+      background: var(--k-menu-active-bg, var(--k-color-bg-selected));
+      color: var(--k-menu-active-color, var(--k-color-primary));
+
+      &::before {
+        height: 24px;
+      }
+    }
+
+    &.is-disabled {
+      color: var(--k-color-text-tertiary);
+      cursor: not-allowed;
+
+      &:hover {
+        background: transparent;
+        color: var(--k-color-text-tertiary);
+      }
+    }
+  }
+
+  // ─── icon / label / suffix / arrow ──────────
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    width: 16px;
+    justify-content: center;
+    color: var(--k-menu-icon-color, inherit);
+  }
+
+  &__label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__suffix {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--k-color-text-tertiary);
+    background: var(--k-color-bg-tertiary);
+    border-radius: var(--k-border-radius-sm);
+    padding: 1px 6px;
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+    color: var(--k-color-text-tertiary);
+
+    &.is-open {
+      transform: rotate(90deg);
+    }
+  }
+
+  // ─── 子菜单容器 ──────────────────────────────
+  // ⚠️ 不要在这里写 transition，由 JS 动态设置 height 实现精确动画
+  &__submenu {
+    overflow: hidden;
+    height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .k-menu__item {
+      padding-left: 44px;
+    }
+
+    .k-menu__submenu .k-menu__item {
+      padding-left: 72px;
+    }
+  }
+}
+
+// 暗色模式：菜单项 hover / active 时文字用品牌亮蓝 #4096FF（默认文字色保持原样）
+[data-theme='dark'] {
+  .k-menu__item {
+    &:hover:not(.is-disabled),
+    &.is-active {
+      color: var(--k-color-primary-blue-1);
+    }
+  }
+}

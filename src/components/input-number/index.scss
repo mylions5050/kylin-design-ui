@@ -1,0 +1,177 @@
+/* ======================================
+   KInputNumber（基于 KInput 组合）
+   ====================================== */
+.k-input-number {
+  display: inline-block;
+  width: 150px;
+
+  /* 输入文本默认居中（Element Plus 同款）；有前缀/后缀插槽时左对齐 */
+  .k-input__inner {
+    text-align: center;
+  }
+
+  &--has-prefix-suffix .k-input__inner {
+    text-align: left;
+    padding: 0 12px;
+  }
+  $statuses: (
+    primary: var(--k-color-primary),
+    error: var(--k-color-error),
+    warning: var(--k-color-warning),
+    success: var(--k-color-success),
+    info: var(--k-color-info),
+  );
+  @each $name, $color in $statuses {
+    &--status-#{$name} .k-input {
+      border-color: $color;
+
+      /* hover / 聚焦时保持状态色，不被 KInput 的 primary 覆盖 */
+      &:hover {
+        border-color: $color;
+      }
+
+      &.is-focused {
+        border-color: $color;
+        box-shadow: 0 0 0 2px var(--k-color-#{$name}-light);
+      }
+    }
+  }
+
+  /* 有按钮时去掉 KInput 外层 padding，让按钮撑满整个高度 */
+  &--controls-left .k-input,
+  &--controls-right .k-input {
+    padding: 0;
+
+    .k-input__wrapper {
+      gap: 0;
+      /* KInput 父级 align-items: center 会把 wrapper 压到内容高，这里拉满 */
+      align-self: stretch;
+    }
+  }
+
+  /* ===== 增减按钮通用 ===== */
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--k-color-text-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--k-color-primary);
+    }
+
+    &.is-disabled {
+      cursor: not-allowed;
+      color: var(--k-color-text-disabled);
+
+      &:hover {
+        color: var(--k-color-text-disabled);
+      }
+    }
+  }
+
+  /* ===== 左右两侧按钮：等宽等高、灰底、左右分隔线 ===== */
+  &__btn-minus,
+  &__btn-plus {
+    align-self: stretch;
+    width: 32px;
+    background: var(--k-color-bg-secondary);
+  }
+
+  &__btn-minus {
+    border-right: 1px solid var(--k-color-border);
+    border-radius: var(--k-border-radius) 0 0 var(--k-border-radius);
+  }
+
+  &__btn-plus {
+    border-left: 1px solid var(--k-color-border);
+    border-radius: 0 var(--k-border-radius) var(--k-border-radius) 0;
+  }
+
+  /* KInput 的 suffix 包裹层撑满高度，加号按钮才能贴边 */
+  .k-input__suffix {
+    align-self: stretch;
+    gap: 0;
+  }
+
+  /* ===== 右侧上下箭头模式 ===== */
+  &__controls {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 0;
+    background: var(--k-color-bg-secondary);
+    border-left: 1px solid var(--k-color-border);
+    border-radius: 0 var(--k-border-radius) var(--k-border-radius) 0;
+    overflow: hidden;
+
+    /* hover 展开 / 聚焦时常显：宽度从 0 展开，把后缀内容往前顶（antd 同款） */
+    opacity: 0;
+    transition: width 0.2s, opacity 0.2s;
+  }
+
+  &--controls-right:hover &__controls,
+  &--controls-right.is-focused &__controls {
+    width: var(--k-input-number-controls-w, 24px);
+    opacity: 1;
+  }
+
+  &__controls &__btn {
+    flex: 1;
+    width: 100%;
+    font-size: 10px;
+  }
+
+  &__controls &__btn-up {
+    border-bottom: 1px solid var(--k-color-border);
+  }
+
+  /* ===== 用户自定义前缀 / 后缀 ===== */
+  &__prefix,
+  &__suffix {
+    display: inline-flex;
+    align-items: center;
+    color: var(--k-color-text-secondary);
+  }
+
+  &__prefix {
+    padding-left: 8px;
+  }
+
+  &__suffix {
+    padding-right: 8px;
+  }
+
+  /* ===== 禁用态按钮底色跟随 ===== */
+  &.is-disabled {
+    &__btn-minus,
+    &__btn-plus,
+    &__controls {
+      background: var(--k-color-bg-disabled);
+    }
+  }
+}
+
+/* ===== 尺寸：按钮宽度随尺寸收窄 ===== */
+.k-input-number .k-input--small {
+  --k-input-number-controls-w: 20px;
+
+  .k-input-number__btn-minus,
+  .k-input-number__btn-plus {
+    width: 24px;
+  }
+}
+
+.k-input-number .k-input--large {
+  --k-input-number-controls-w: 28px;
+
+  .k-input-number__btn-minus,
+  .k-input-number__btn-plus {
+    width: 40px;
+  }
+}

@@ -1,0 +1,495 @@
+.k-steps {
+  --k-steps-active-color: var(--k-color-primary);
+  --k-steps-active-bg: var(--k-steps-active-color, var(--k-color-primary));
+
+  display: flex;
+  width: 100%;
+
+  // ============ 状态配色 ============
+  --k-steps-wait-color: var(--k-color-text-tertiary);
+  --k-steps-wait-bg: var(--k-color-bg);
+  --k-steps-wait-border: var(--k-color-border);
+  --k-steps-finish-color: var(--k-color-primary);
+  --k-steps-finish-bg: var(--k-color-bg);
+  --k-steps-finish-border: var(--k-color-primary);
+  --k-steps-process-color: #fff;
+  --k-steps-process-bg: var(--k-steps-active-bg);
+  --k-steps-process-border: var(--k-steps-active-bg);
+  --k-steps-error-color: var(--k-color-error);
+  --k-steps-error-bg: var(--k-color-bg);
+  --k-steps-error-border: var(--k-color-error);
+  --k-steps-tail-color: var(--k-color-border);
+  --k-steps-tail-active-color: var(--k-color-primary);
+
+  font-size: var(--k-font-size);
+  color: var(--k-color-text);
+
+  // ============ 单个节点 ============
+  &__node {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+
+    &.is-clickable {
+      cursor: pointer;
+      .k-steps__title-text:hover {
+        color: var(--k-steps-active-color);
+      }
+    }
+    &.is-disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    // 最后一个节点不显示 tail
+    &.is-last {
+      .k-steps__tail {
+        display: none;
+      }
+    }
+  }
+
+  // ============ 连接线（绝对定位，从圆点右侧开始，到下一个圆点左侧结束） ============
+  // tail 从圆点右边缘 + 10px 开始，到下一个节点圆点左边缘 - 10px 结束
+  &__tail {
+    position: absolute;
+    top: 15px;                          // 圆点垂直中心
+    left: calc(50% + 16px + 10px);      // 圆点中心 + 半径 + 10px 间距
+    width: calc(100% - 32px - 20px);    // 减去圆点直径和两端间距
+    height: 2px;
+    background: var(--k-steps-tail-color);
+    transition: background 0.2s;
+    z-index: 0;
+
+    &.is-active {
+      background: var(--k-steps-tail-active-color);
+    }
+    // tail 状态颜色跟随步骤状态
+    &.is-success {
+      background: var(--k-color-success);
+    }
+    &.is-error {
+      background: var(--k-steps-error-color);
+    }
+    &.is-warning {
+      background: var(--k-color-warning);
+    }
+  }
+
+  // ============ 步骤圆点（z-index 盖在 tail 上方） ============
+  &__icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--k-steps-wait-border);
+    color: var(--k-steps-wait-color);
+    background: var(--k-steps-wait-bg);
+    font-size: 0;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
+    i {
+      font-size: 16px;
+    }
+  }
+
+  &__num {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    color: currentColor;
+  }
+
+  // fill 填充模式：圆点填充状态颜色，文字/图标白色
+  .k-steps__icon.is-fill {
+    color: #fff !important;
+  }
+  .k-steps__node.is-finish .k-steps__icon.is-fill {
+    background: var(--k-steps-finish-color) !important;
+    border-color: var(--k-steps-finish-color) !important;
+  }
+  .k-steps__node.is-process .k-steps__icon.is-fill {
+    background: var(--k-steps-process-bg) !important;
+    border-color: var(--k-steps-process-border) !important;
+  }
+  .k-steps__node.is-success .k-steps__icon.is-fill {
+    background: var(--k-color-success) !important;
+    border-color: var(--k-color-success) !important;
+  }
+  .k-steps__node.is-error .k-steps__icon.is-fill {
+    background: var(--k-steps-error-color) !important;
+    border-color: var(--k-steps-error-border) !important;
+  }
+  .k-steps__node.is-warning .k-steps__icon.is-fill {
+    background: var(--k-color-warning) !important;
+    border-color: var(--k-color-warning) !important;
+  }
+  .k-steps__node.is-wait .k-steps__icon.is-fill {
+    background: var(--k-steps-wait-color) !important;
+    border-color: var(--k-steps-wait-border) !important;
+  }
+
+  // ============ 状态样式 ============
+  // finish：蓝色边框 + 蓝色对勾
+  .k-steps__node.is-finish {
+    .k-steps__icon {
+      color: var(--k-steps-finish-color);
+      border-color: var(--k-steps-finish-border);
+      background: var(--k-steps-finish-bg);
+    }
+    .k-steps__title-text {
+      color: var(--k-color-text);
+    }
+    .k-steps__desc {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  // wait：灰色边框 + 灰色数字
+  .k-steps__node.is-wait {
+    .k-steps__icon {
+      color: var(--k-steps-wait-color);
+      border-color: var(--k-steps-wait-border);
+      background: var(--k-steps-wait-bg);
+    }
+    .k-steps__title-text {
+      color: var(--k-color-text-secondary);
+    }
+    .k-steps__desc {
+      color: var(--k-color-text-placeholder);
+    }
+  }
+
+  // process：蓝色实心圆 + 白色数字
+  .k-steps__node.is-process {
+    .k-steps__icon {
+      color: var(--k-steps-process-color);
+      border-color: var(--k-steps-process-border);
+      background: var(--k-steps-process-bg);
+    }
+    .k-steps__title-text {
+      color: var(--k-steps-active-color);
+      font-weight: 600;
+    }
+    .k-steps__desc {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  // error：红色边框 + 红色叉号
+  .k-steps__node.is-error {
+    .k-steps__icon {
+      color: var(--k-steps-error-color);
+      border-color: var(--k-steps-error-border);
+      background: var(--k-steps-error-bg);
+    }
+    .k-steps__title-text {
+      color: var(--k-steps-error-color);
+    }
+    .k-steps__desc {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  // success：绿色边框 + 绿色对勾，不加背景
+  .k-steps__node.is-success {
+    .k-steps__icon {
+      color: var(--k-color-success);
+      border-color: var(--k-color-success);
+      background: transparent;
+    }
+    .k-steps__title-text {
+      color: var(--k-color-success);
+    }
+    .k-steps__desc {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  // warning：橙色边框 + 橙色感叹号，不加背景
+  .k-steps__node.is-warning {
+    .k-steps__icon {
+      color: var(--k-color-warning);
+      border-color: var(--k-color-warning);
+      background: transparent;
+    }
+    .k-steps__title-text {
+      color: var(--k-color-warning);
+    }
+    .k-steps__desc {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  // ============ 文本区 ============
+  &__content {
+    position: relative;
+    z-index: 1;
+    margin-top: 8px;
+    padding: 0 8px;
+    min-width: 0;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: var(--k-font-size);
+    line-height: 22px;
+  }
+
+  &__title-text {
+    color: var(--k-color-text);
+    transition: color 0.2s;
+  }
+
+  &__subtitle {
+    font-size: var(--k-font-size-sm);
+    color: var(--k-color-text-tertiary);
+    white-space: nowrap;
+  }
+
+  &__desc {
+    margin-top: 4px;
+    font-size: var(--k-font-size-sm);
+    line-height: 18px;
+    color: var(--k-color-text-secondary);
+  }
+
+  // ============ 横向布局 ============
+  // tail 从圆点中心向右延伸 100%（覆盖相邻节点间的空间）
+  &.is-horizontal {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  // ============ 纵向布局 ============
+  &.is-vertical {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .k-steps__node {
+      flex: 0 0 auto;
+      flex-direction: row;
+      align-items: flex-start;
+      text-align: left;
+      min-height: var(--k-steps-min-height, 120px);  // 每个 item 最小高度，支持用户自定义
+      padding-bottom: 10px;             // 底部留白
+
+      .k-steps__icon {
+        flex-shrink: 0;
+      }
+
+      .k-steps__content {
+        margin-top: 0;
+        margin-left: 12px;
+        padding: 0;
+        padding-top: 4px;
+      }
+
+      .k-steps__title {
+        justify-content: flex-start;
+      }
+    }
+
+    // 纵向：tail 为竖线，从圆点底部 + 10px 向下延伸
+    .k-steps__tail {
+      top: 42px;                        // 圆点底部(32px) + 10px 间距
+      left: 15px;                       // 圆点水平中心
+      width: 2px;
+      height: calc(100% - 42px - 10px); // 从圆点底部+间距到节点底部减去底部留白
+    }
+
+    // 最后一项也保留底部留白
+    .k-steps__node.is-last {
+      padding-bottom: 0;
+    }
+  }
+
+  // ============ small 尺寸 ============
+  &.is-small {
+    .k-steps__icon {
+      width: 24px;
+      height: 24px;
+      i {
+        font-size: 12px;
+      }
+    }
+    .k-steps__num {
+      font-size: 12px;
+    }
+    .k-steps__tail {
+      top: 11px; // 24px 圆点垂直中心
+    }
+    .k-steps__content {
+      margin-top: 4px;
+    }
+    .k-steps__title {
+      font-size: var(--k-font-size-sm);
+      line-height: 20px;
+    }
+    .k-steps__desc {
+      display: none;
+    }
+  }
+
+  // ============ mini 尺寸 ============
+  &.is-mini {
+    .k-steps__icon {
+      width: 20px;
+      height: 20px;
+      i {
+        font-size: 11px;
+      }
+    }
+    .k-steps__num {
+      font-size: 12px;
+    }
+    .k-steps__tail {
+      top: 9px; // 20px 圆点垂直中心
+      left: calc(50% + 10px + 6px);   // 圆点中心 + 半径 + 6px 间距
+      width: calc(100% - 20px - 12px); // 减去圆点直径和两端间距
+    }
+    .k-steps__content {
+      margin-top: 4px;
+    }
+    .k-steps__title {
+      font-size: var(--k-font-size-sm);
+      line-height: 18px;
+    }
+    .k-steps__desc {
+      margin-top: 2px;
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    // mini + 纵向
+    &.is-vertical {
+      .k-steps__node {
+        min-height: var(--k-steps-min-height, 80px);
+        padding-bottom: 6px;
+      }
+      .k-steps__tail {
+        top: 28px; // 20px 圆点底部 + 8px 间距
+        left: 9px; // 20px 圆点水平中心
+        height: calc(100% - 28px - 6px);
+      }
+    }
+
+    // mini + inline 横向
+    &.is-inline.is-horizontal {
+      .k-steps__header {
+        gap: 0;
+      }
+      .k-steps__icon + .k-steps__title {
+        margin-left: 6px;
+      }
+      .k-steps__tail {
+        margin-left: 6px;
+        margin-right: 6px;
+        height: 2px;
+      }
+      .k-steps__desc {
+        padding-left: 26px; // 20px 圆点 + 6px gap
+      }
+    }
+  }
+
+  // ============ inline 结构（圆点 + 标题 → 一排，描述 → 单独一行） ============
+  &.is-inline {
+    .k-steps__node {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      flex: 1 1 0;                  // 均分节点宽度
+      min-width: auto;              // 节点宽度不低于内容宽度
+      overflow: visible;
+    }
+
+    // icon + title + tail 在同一行，占满节点宽度
+    .k-steps__header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;                       // 不用 gap，用 margin 控制间距
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .k-steps__icon {
+      flex-shrink: 0;
+    }
+
+    .k-steps__title {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;               // 标题不收缩
+      margin-left: 8px;             // 圆点和标题之间的间距
+    }
+
+    .k-steps__desc {
+      margin-top: 4px;
+      font-size: var(--k-font-size-sm);
+      line-height: 18px;
+      color: var(--k-color-text-secondary);
+      text-align: left;
+      padding-left: 40px;           // 与标题左对齐
+      box-sizing: border-box;
+      width: 0;                     // 不撑宽节点
+      min-width: 100%;              // 占满节点宽度（由 header 决定）
+      overflow-wrap: break-word;
+    }
+
+    // 横向 inline：tail 用 flex:1 填充标题右侧剩余空间
+    &.is-horizontal {
+      .k-steps__tail {
+        position: static;             // 覆盖基类 absolute，改用 flex 布局
+        flex: 1;                    // 填充剩余空间
+        height: 2px;
+        background: var(--k-steps-tail-color);
+        transition: background 0.2s;
+        align-self: center;         // 垂直居中
+        margin-left: 10px;          // 与标题之间的间距
+        margin-right: 10px;         // 右边缘间距
+
+        &.is-active {
+          background: var(--k-steps-tail-active-color);
+        }
+      }
+    }
+
+    // 纵向 inline 同纵向默认样式
+    &.is-vertical {
+      .k-steps__node {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        min-height: var(--k-steps-min-height, 120px);
+        padding-bottom: 10px;
+      }
+
+      .k-steps__header {
+        justify-content: flex-start;
+      }
+
+      .k-steps__tail {
+        top: 42px;
+        left: 15px;
+        width: 2px;
+        height: calc(100% - 42px - 10px);
+      }
+
+      .k-steps__node.is-last {
+        padding-bottom: 0;
+      }
+    }
+  }
+}

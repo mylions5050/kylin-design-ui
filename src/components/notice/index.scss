@@ -1,0 +1,169 @@
+.notice-container {
+  min-width: 400px;
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.notice {
+  pointer-events: auto;
+  display: flex;
+  padding: 12px 16px 12px 12px;
+  align-items: center;
+  gap: 12px;
+  border-radius: 16px;
+  background: var(--k-color-bg);
+  box-shadow: var(--k-shadow-overlay);
+  box-sizing: border-box;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &__icon-img {
+    width: 14px;
+    height: 14px;
+    
+    // KIcon 图标颜色与类型对应
+    .k-icon {
+      // 默认继承容器颜色
+      color: inherit;
+      
+      // 确保 SVG 内联图标也跟随文字颜色
+      &--svg {
+        color: inherit;
+      }
+    }
+  }
+
+  &__icon-img.is-spin {
+    animation: notice-spin 1s linear infinite;
+  }
+
+  &--success &__icon {
+    background: var(--k-color-success-light);
+    .k-icon {
+      color: var(--k-color-success);
+    }
+  }
+  &--error &__icon {
+    background: var(--k-color-error-light);
+    .k-icon {
+      color: var(--k-color-error);
+    }
+  }
+  &--info &__icon {
+    background: var(--k-color-primary-light);
+    .k-icon {
+      color: var(--k-color-primary);
+    }
+  }
+  &--warning &__icon {
+    background: var(--k-color-warning-light);
+    .k-icon {
+      color: var(--k-color-warning);
+    }
+  }
+
+  & .notice__icon.is-bare {
+    width: auto;
+    height: auto;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__message {
+    color: var(--k-color-text);
+    font-family: var(--k-font-family);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+  }
+
+  &__description {
+    margin-top: 2px;
+    color: var(--k-color-text-secondary);
+    font-family: var(--k-font-family);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.25px;
+    word-break: break-word;
+  }
+
+  // 操作按钮样式调整，适应 KButton
+  .notice-action {
+    margin-left: 8px;
+    
+    &.k-btn {
+      height: 28px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+    }
+  }
+
+  &__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__close-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@keyframes notice-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.notice-anim-enter-active,
+.notice-anim-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+.notice-anim-enter-from {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.notice-anim-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.notice-anim-move {
+  transition: transform 0.3s ease;
+}

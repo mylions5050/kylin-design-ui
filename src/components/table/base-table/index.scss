@@ -1,0 +1,307 @@
+.base-table {
+  position: relative;
+  width: 100%;
+  font-family: Mikado, Roboto, sans-serif;
+  color: var(--k-color-text);
+
+  .selection-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .check-icon {
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &__viewport {
+    position: relative;
+  }
+
+  &__scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+    table-layout: fixed;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 38px;
+    padding: 0 16px;
+    text-align: left;
+    font-family: var(--Font-Family-Roboto, Roboto);
+    font-size: var(--size-112, 12px);
+    font-style: normal;
+    font-weight: 700;
+    line-height: var(--line-height-316, 16px);
+    letter-spacing: var(--Letter-Spacing-Regular, 0.25px);
+    color: var(--k-color-text-secondary);
+    background: var(--k-color-bg);
+    border-bottom: 1px solid var(--k-color-border);
+    white-space: nowrap;
+    vertical-align: middle;
+
+    &.is-align-center { text-align: center; }
+    &.is-align-right { text-align: right; }
+    &.is-fixed { background: var(--k-color-bg); z-index: 3; }
+    &.is-sorted { color: var(--k-color-primary); }
+  }
+
+  &__group-cell {
+    text-align: center;
+    background: var(--k-color-bg);
+    border: none!important;
+    height: 26px!important;
+    padding: var(--8, 8px) var(--16, 16px) 0 var(--16, 16px)!important;
+    white-space: pre;
+  }
+
+  tbody td {
+    height: 44px;
+    padding: 0 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--k-color-border-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    background: var(--k-color-bg);
+
+    &.is-align-center { text-align: center; }
+    &.is-align-right { text-align: right; }
+    &.is-fixed { background: var(--k-color-bg); z-index: 1; }
+    &.is-cell-overflow-visible { overflow: visible; }
+  }
+
+  &__row {
+    transition: background-color 0.15s ease;
+    cursor: default;
+
+    &.is-clickable,
+    &.is-selectable {
+      cursor: pointer;
+    }
+
+    &.is-zebra-alt td {
+      background: var(--k-color-bg-hover);
+    }
+
+    &:hover td,
+    &:hover td.is-fixed {
+      background: var(--k-color-bg-hover);
+    }
+
+    &.is-selected td {
+      background: var(--k-color-bg-selected) !important;
+    }
+
+    // 行级状态色（配合 row-class-name / rowClassName prop 使用）
+    &.is-row-success td { background: var(--k-color-row-success); }
+    &.is-row-info td { background: var(--k-color-row-info); }
+    &.is-row-warning td { background: var(--k-color-row-warning); }
+    &.is-row-danger td { background: var(--k-color-row-danger); }
+
+    // loading 时单元格渲染骨架条：禁用 hover，避免灰条上叠 hover 底色
+    &.is-loading {
+      cursor: default;
+      &:hover td,
+      &:hover td.is-fixed {
+        background: transparent;
+      }
+    }
+  }
+
+  &__skeleton-bar {
+    display: block;
+    width: 100%;
+    height: 12px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--k-color-skeleton-1) 25%, var(--k-color-skeleton-2) 50%, var(--k-color-skeleton-1) 75%);
+    background-size: 200% 100%;
+    animation: base-table-shimmer 1.6s ease-in-out infinite;
+  }
+
+  &__sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+
+    &:hover { color: var(--k-color-primary); }
+  }
+
+  &__sort-label { white-space: pre; }
+
+  &__sort-icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+
+    &.is-idle { opacity: 0.5; }
+    &.is-asc { opacity: 1; }
+    &.is-desc { opacity: 1; transform: rotate(180deg); }
+  }
+
+  &__resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: col-resize;
+    user-select: none;
+    z-index: 1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 2px;
+      top: 25%;
+      bottom: 25%;
+      width: 2px;
+      border-radius: 1px;
+      background: transparent;
+      transition: background 0.15s ease;
+    }
+
+    &:hover::after { background: var(--k-color-border); }
+  }
+
+  &.is-resizing {
+    user-select: none;
+    cursor: col-resize;
+
+    .base-table__sort-btn { pointer-events: none; }
+  }
+
+  &__empty {
+    position: sticky;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--k-color-text-placeholder);
+    background: var(--k-color-bg);
+    box-sizing: border-box;
+  }
+
+  .base-table__highlight {
+    background: var(--k-color-bg-selected) !important;
+    color: var(--k-color-highlight) !important;
+    padding: 0;
+    border-radius: 2px;
+  }
+
+  &__summary-row {
+    td {
+      height: 44px;
+      padding: 0 16px;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--k-color-text);
+      background: var(--k-color-summary-bg);
+      border-top: 2px solid var(--k-color-border-summary);
+      border-bottom: none;
+      white-space: nowrap;
+      vertical-align: middle;
+
+      &.is-align-center { text-align: center; }
+      &.is-align-right { text-align: right; }
+      &.is-fixed { background: var(--k-color-summary-bg); z-index: 2; }
+    }
+  }
+
+  &__expand-row {
+    .base-table__expand-cell {
+      padding: 16px;
+      background: var(--k-color-bg-hover);
+      border-bottom: 1px solid var(--k-color-border-light);
+    }
+  }
+
+  .is-cell-bold {
+    color: var(--k-color-text);
+    font-family: var(--Font-Family-Roboto, Roboto);
+    font-size: var(--size-214, 14px);
+    font-style: normal;
+    font-weight: 700;
+    line-height: var(--line-height-520, 20px);
+    letter-spacing: var(--Letter-Spacing-Regular, 0.25px);
+  }
+
+  // Fixed-left column shadow: a single overlay div spanning the table height so it
+  // reads as one continuous line, not per-cell segments. Lives as a sibling of
+  // __scroll inside __viewport, so it never scrolls — stays pinned to the frozen
+  // column's right edge. Gradient instead of box-shadow for reliable rendering.
+  &__left-shadow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background: var(--k-color-shadow-linear-gradient, linear-gradient(to right, var(--k-color-shadow), transparent));
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+
+    &.is-visible { opacity: 1; }
+  }
+  &__right-shadow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background: var(--k-color-shadow-linear-gradient, linear-gradient(to left, var(--k-color-shadow), transparent));
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+
+    &.is-visible { opacity: 1; }
+  }
+  // border prop：直接给所有单元格加四边 border（不用父组件 wrapper）
+  &.is-bordered {
+    .base-table__table {
+      border-collapse: collapse;
+    }
+
+    .base-table__table th,
+    .base-table__table td {
+      border: 1px solid var(--k-color-border-table);
+    }
+  }
+
+  // right fixed column shadow handled by __right-shadow overlay above
+}
+
+@keyframes base-table-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

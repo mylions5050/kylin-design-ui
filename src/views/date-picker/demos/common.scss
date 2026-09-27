@@ -1,0 +1,23 @@
+.demo-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.demo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+
+  label {
+    font-size: 14px;
+    color: var(--k-color-text-secondary);
+    font-weight: 500;
+  }
+
+  .current-info {
+    font-size: 13px;
+    color: var(--k-color-text-tertiary);
+  }
+}

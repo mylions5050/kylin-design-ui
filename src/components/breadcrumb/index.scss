@@ -1,0 +1,95 @@
+/* KBreadcrumb 面包屑组件样式 —— 消费全局 --k-* token，不硬编码色值。 */
+.k-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--k-font-size, 14px);
+  line-height: 1.5;
+  color: var(--k-color-text-secondary);
+
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 0;
+  }
+
+  &__item-wrap {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 2px;
+    border-radius: var(--k-border-radius-sm, 4px);
+    color: var(--k-color-text-secondary);
+    text-decoration: none;
+    cursor: default;
+    transition: color 0.2s, background-color 0.2s;
+
+    &:hover {
+      color: inherit;
+    }
+
+    // 可点击项
+    &.is-link {
+      cursor: pointer;
+
+      &:hover {
+        color: var(--k-color-primary);
+      }
+    }
+
+    // 当前页末项：高亮加粗
+    &.is-current {
+      color: var(--k-color-text);
+      font-weight: 600;
+      cursor: default;
+
+      &:hover {
+        color: var(--k-color-text);
+        background: transparent;
+      }
+    }
+
+    // 禁用项
+    &.is-disabled {
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    // 省略占位「…」：弱化、不可点
+    &--more {
+      cursor: default;
+      color: var(--k-color-text-tertiary);
+
+      &:hover {
+        color: var(--k-color-text-tertiary);
+        background: transparent;
+      }
+    }
+  }
+
+  // 项内前缀图标
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1em;
+  }
+
+  // 分隔符
+  &__separator {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 8px;
+    color: var(--k-color-text-tertiary);
+    font-size: 0.9em;
+    user-select: none;
+  }
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>Kylin Design UI · Logo 设计方案</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+    background: #f5f7fa; color: #1f2329; padding: 40px 48px;
+  }
+  h1 { font-size: 26px; margin-bottom: 6px; }
+  .sub { color: #646a73; margin-bottom: 36px; font-size: 14px; }
+  .grid { display: flex; gap: 24px; align-items: stretch; }
+  .card {
+    flex: 1; background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+    padding: 28px 24px; display: flex; flex-direction: column; gap: 18px;
+  }
+  .stage {
+    display: flex; align-items: flex-end; gap: 18px; padding: 24px;
+    background: linear-gradient(135deg, #f8fafc, #eef2f7);
+    border-radius: 12px; min-height: 160px;
+  }
+  .stage--dark { background: #10243e; }
+  .meta h2 { font-size: 17px; margin-bottom: 6px; }
+  .meta h2 span { color: #1677ff; font-size: 13px; font-weight: 600; margin-right: 8px; }
+  .meta p { font-size: 13px; color: #646a73; line-height: 1.7; }
+  .sizes { display: flex; align-items: center; gap: 14px; margin-top: 2px; }
+  .sizes .label { font-size: 12px; color: #98a2b3; margin-right: 2px; }
+  .lockup { display: flex; align-items: center; gap: 10px; }
+  .lockup .name { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
+  .lockup .name small { display: block; font-size: 11px; font-weight: 500; color: #98a2b3; letter-spacing: 1.5px; }
+  h1 + .sub b { color: #1677ff; }
+</style>
+</head>
+<body>
+  <h1>Kylin Design UI · Logo 设计方案</h1>
+  <p class="sub">K 前缀源自 <b>Kylin</b>（麒麟）。以下三个方向均围绕字母 K 展开，兼顾组件库气质与麒麟意象，可单独选用图形，也可与中英文名组合。</p>
+
+  <div class="grid">
+    <!-- 方案一 -->
+    <div class="card">
+      <div class="stage">
+        <svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gA" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#4096ff"/><stop offset="1" stop-color="#0958d9"/>
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gA)"/>
+          <path d="M33 28 V68" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M67 28 L46 48 L67 68" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="73" cy="23" r="5" fill="#8fd4ff"/>
+        </svg>
+        <svg width="32" height="32" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gA)"/>
+          <path d="M33 28 V68" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M67 28 L46 48 L67 68" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="73" cy="23" r="5" fill="#8fd4ff"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <h2><span>方案一</span>K · 渐变印记</h2>
+        <p>最稳健的企业级组件库路线：主色渐变圆角方 + 圆头白 K，右上角一枚亮色小圆点象征「组件颗粒」，呼应组件按需拼装。缩小到 16px favicon 依然清晰，适合追求专业感的第一印象。</p>
+      </div>
+      <div class="lockup">
+        <svg width="28" height="28" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gA)"/>
+          <path d="M33 28 V68" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M67 28 L46 48 L67 68" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="73" cy="23" r="5" fill="#8fd4ff"/>
+        </svg>
+        <div class="name">Kylin Design UI<small>KYLIN DESIGN UI · VUE3</small></div>
+      </div>
+    </div>
+
+    <!-- 方案二 -->
+    <div class="card">
+      <div class="stage">
+        <svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gB" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1677ff"/><stop offset="1" stop-color="#0a2540"/>
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gB)"/>
+          <path d="M33 26 V70" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 50 C 53 57, 61 64, 68 70" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 46 C 56 42, 63 34, 66 22" fill="none" stroke="#8fd4ff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M56 35 C 60 32, 63 29, 65 25" fill="none" stroke="#8fd4ff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <svg width="32" height="32" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gB)"/>
+          <path d="M33 26 V70" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 50 C 53 57, 61 64, 68 70" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 46 C 56 42, 63 34, 66 22" fill="none" stroke="#8fd4ff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M56 35 C 60 32, 63 29, 65 25" fill="none" stroke="#8fd4ff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <h2><span>方案二</span>麒麟角 K</h2>
+        <p>点题之作：K 的右上笔画化作一根向上生长的麒麟角（浅色分叉模拟鹿角形态），深蓝夜空渐变打底，祥瑞感与科技感并存。识别度最高，一眼能讲出品牌故事；代价是小尺寸下角部细节会略微弱化。</p>
+      </div>
+      <div class="lockup">
+        <svg width="28" height="28" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gB)"/>
+          <path d="M33 26 V70" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 50 C 53 57, 61 64, 68 70" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 46 C 56 42, 63 34, 66 22" fill="none" stroke="#8fd4ff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M56 35 C 60 32, 63 29, 65 25" fill="none" stroke="#8fd4ff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <div class="name">Kylin Design UI<small>KYLIN DESIGN UI · VUE3</small></div>
+      </div>
+    </div>
+
+    <!-- 方案三 -->
+    <div class="card">
+      <div class="stage">
+        <svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="#e6f4ff"/>
+          <rect x="28" y="24" width="13" height="48" rx="6.5" fill="#0958d9"/>
+          <rect x="35" y="30.5" width="34" height="13" rx="6.5" fill="#1677ff" transform="rotate(-40 52 37)"/>
+          <rect x="35" y="52.5" width="34" height="13" rx="6.5" fill="#69b1ff" transform="rotate(40 52 59)"/>
+        </svg>
+        <svg width="32" height="32" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="#e6f4ff"/>
+          <rect x="28" y="24" width="13" height="48" rx="6.5" fill="#0958d9"/>
+          <rect x="35" y="30.5" width="34" height="13" rx="6.5" fill="#1677ff" transform="rotate(-40 52 37)"/>
+          <rect x="35" y="52.5" width="34" height="13" rx="6.5" fill="#69b1ff" transform="rotate(40 52 59)"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <h2><span>方案三</span>积木 K</h2>
+        <p>组件库的隐喻最直白：K 由三块圆角积木拼装而成，三档蓝色阶暗示「基础 / 组合 / 变体」的组件关系。无渐变、纯几何，最耐看也最容易在 favicon、GitHub 头像、终端 ASCII 等场景复用。</p>
+      </div>
+      <div class="lockup">
+        <svg width="28" height="28" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="#e6f4ff"/>
+          <rect x="28" y="24" width="13" height="48" rx="6.5" fill="#0958d9"/>
+          <rect x="35" y="30.5" width="34" height="13" rx="6.5" fill="#1677ff" transform="rotate(-40 52 37)"/>
+          <rect x="35" y="52.5" width="34" height="13" rx="6.5" fill="#69b1ff" transform="rotate(40 52 59)"/>
+        </svg>
+        <div class="name">Kylin Design UI<small>KYLIN DESIGN UI · VUE3</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 深色底预览 -->
+  <h1 style="font-size: 18px; margin: 36px 0 6px;">深色模式适配预览</h1>
+  <p class="sub">图形本身不变，方案一 / 三在深色下把浅蓝底色替换为深色描边或提高明度即可。</p>
+  <div class="grid">
+    <div class="card" style="background:#0d1b2e; border-color:#1f3350;">
+      <div class="stage stage--dark">
+        <svg width="72" height="72" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gA)"/>
+          <path d="M33 28 V68" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M67 28 L46 48 L67 68" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="73" cy="23" r="5" fill="#8fd4ff"/>
+        </svg>
+        <svg width="72" height="72" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#gB)"/>
+          <path d="M33 26 V70" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 50 C 53 57, 61 64, 68 70" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M47 46 C 56 42, 63 34, 66 22" fill="none" stroke="#8fd4ff" stroke-width="9" stroke-linecap="round"/>
+          <path d="M56 35 C 60 32, 63 29, 65 25" fill="none" stroke="#8fd4ff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <svg width="72" height="72" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="88" height="88" rx="24" fill="#122c4d"/>
+          <rect x="28" y="24" width="13" height="48" rx="6.5" fill="#4096ff"/>
+          <rect x="35" y="30.5" width="34" height="13" rx="6.5" fill="#69b1ff" transform="rotate(-40 52 37)"/>
+          <rect x="35" y="52.5" width="34" height="13" rx="6.5" fill="#91caff" transform="rotate(40 52 59)"/>
+        </svg>
+      </div>
+      <p style="font-size:13px;color:#9fb3cd;">方案一渐变自带深色亲和；方案二本就是深色底；方案三深色下将色阶整体提亮一档。</p>
+    </div>
+  </div>
+</body>
+</html>

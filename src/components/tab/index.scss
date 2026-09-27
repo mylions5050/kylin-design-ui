@@ -1,0 +1,187 @@
+.k-tab {
+  &__wrap {
+    font-size: var(--k-font-size);
+    color: var(--k-color-text);
+  }
+
+  // ============ 头部（含 tab 列表 + 下划线指示条 + 溢出箭头） ============
+  &__head {
+    position: relative;
+    border-bottom: 1px solid var(--k-color-border);
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  // 可滚动的内容区（scrollable 时包裹 nav）
+  &__scroll {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none; // Firefox 隐藏滚动条
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto; // 内容自适应宽度（不撑满父容器），使真正溢出可检测
+    gap: 4px;
+
+    // 均分：撑满容器宽度，每个选项卡平分，文字居中
+    &.is-stretch {
+      flex: 1 1 0;
+      min-width: 0;
+
+      .k-tab__item {
+        flex: 1 1 0;
+        text-align: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  // 单个 tab
+  &__item {
+    position: relative;
+    box-sizing: border-box;
+    padding: var(--k-tab-item-padding, 10px 16px);
+    margin: var(--k-tab-item-margin, 0);
+    color: var(--k-color-text-secondary);
+    font-size: var(--k-font-size);
+    line-height: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease;
+    outline: none;
+
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      color: var(--k-tab-active-color, var(--k-color-primary));
+    }
+
+    &.is-active {
+      color: var(--k-tab-active-color, var(--k-color-primary));
+      font-weight: 500;
+    }
+
+    &:focus-visible {
+      border-radius: var(--k-border-radius-sm);
+      box-shadow: 0 0 0 2px var(--k-tab-active-color, var(--k-color-primary));
+    }
+  }
+
+  // 关闭按钮（closable）
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    color: var(--k-color-text-tertiary);
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+
+    &:hover {
+      color: var(--k-color-error);
+      background: var(--k-color-error-light);
+    }
+  }
+
+  // 添加选项卡按钮（addable 或 #add 插槽）
+  &__add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    width: 24px;
+    height: 24px;
+    align-self: center;
+    border-radius: var(--k-border-radius-sm);
+    color: var(--k-color-text-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease, background 0.2s ease;
+
+    &:hover {
+      color: var(--k-color-primary);
+      background: var(--k-color-bg-tertiary);
+    }
+  }
+
+  // 滑动下划线指示条：由 JS 测量激活项位置后赋值 left/width
+  &__indicator {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--k-tab-active-color, var(--k-color-primary));
+    transition: left 0.25s ease, width 0.25s ease;
+    pointer-events: none;
+
+    // indicator-transition=false 时禁用滑动动画
+    &.is-no-anim {
+      transition: none;
+    }
+  }
+
+  // ============ 溢出滚动：前后箭头 ============
+  &__arrow {
+    flex-shrink: 0;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--k-color-border);
+    border-radius: var(--k-border-radius-sm);
+    background: var(--k-color-bg);
+    color: var(--k-color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--k-color-primary);
+      border-color: var(--k-color-primary);
+      background: var(--k-color-bg-selected);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    // 非 scrollable 时隐藏
+    &--hidden {
+      visibility: hidden;
+    }
+
+    // 左向箭头：复用右向图标并旋转 180°
+    &.is-rotated .k-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  // ============ 面板内容 ============
+  &__content {
+    padding-top: 16px;
+  }
+
+  &__pane {
+    display: block;
+  }
+}

@@ -1,0 +1,131 @@
+/* KRadio base */
+.k-radio {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 8px;
+  user-select: none;
+  transition: all 0.2s;
+
+  // input
+  &__input {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    input[type="radio"] {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      margin: 0;
+      position: absolute;
+    }
+  }
+
+  // 圆形外框，1px 边框
+  &__inner {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--k-color-border);
+    border-radius: 50%;
+    background: var(--k-color-bg);
+    transition: all 0.2s;
+    position: relative;
+    box-sizing: border-box;
+
+    // 选中时圆点
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transform-origin: center;
+      width: 8px;
+      height: 8px;
+      background: var(--k-color-primary);
+      border-radius: 50%;
+      transition: transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+      opacity: 0;
+    }
+  }
+
+  // label 文字
+  &__label {
+    font-size: 14px;
+    color: var(--k-color-text-primary);
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  // size variants
+  &--small {
+    .k-radio__inner {
+      width: 14px;
+      height: 14px;
+      &::before {
+        width: 6px;
+        height: 6px;
+        transform: translate(-50%, -50%) scale(0);
+      }
+    }
+    &.is-checked .k-radio__inner::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  &--large {
+    .k-radio__inner {
+      width: 18px;
+      height: 18px;
+      &::before {
+        width: 10px;
+        height: 10px;
+        transform: translate(-50%, -50%) scale(0);
+      }
+    }
+    &.is-checked .k-radio__inner::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  // 选中态
+  &.is-checked {
+    .k-radio__inner {
+      border-color: var(--k-color-primary);
+      &::before {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+  }
+
+  // 禁用态
+  &.is-disabled {
+    cursor: not-allowed;
+    .k-radio__inner {
+      background: var(--k-color-bg-secondary);
+      border-color: var(--k-color-border);
+      &::before {
+        background: var(--k-color-text-disabled);
+      }
+    }
+    .k-radio__label {
+      color: var(--k-color-text-disabled);
+    }
+  }
+
+  // hover
+  &:not(.is-disabled):hover .k-radio__inner {
+    border-color: var(--k-color-primary-light);
+  }
+}
+
+/* KRadioGroup */
+.k-radio-group {
+  display: inline-flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}

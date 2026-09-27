@@ -1,0 +1,38 @@
+.k-container {
+  display: flex;
+  flex: 1;
+  box-sizing: border-box;
+
+  &--vertical {
+    flex-direction: column;
+  }
+
+  &--horizontal {
+    flex-direction: row;
+  }
+}
+
+.k-header {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+.k-aside {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.k-main {
+  flex: 1;
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 20px;
+}
+
+.k-footer {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0 20px;
+}

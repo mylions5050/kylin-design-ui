@@ -1,0 +1,116 @@
+.k-upload {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+
+  // 隐藏原生 input（仍需可触发 click）
+  &__input {
+    display: none;
+  }
+
+  &__trigger {
+    display: inline-flex;
+    cursor: pointer;
+  }
+
+  &__tip {
+    color: var(--k-color-text-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: -4px;
+  }
+
+  // 文件列表
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__list-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    column-gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: var(--k-color-text);
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--k-color-bg-hover);
+
+      .k-upload__list-item-close {
+        opacity: 1;
+      }
+    }
+
+    &.is-fail .k-upload__list-item-name {
+      color: var(--k-color-error);
+    }
+  }
+
+  &__list-item-icon {
+    color: var(--k-color-text-secondary);
+    flex-shrink: 0;
+  }
+
+  &__list-item-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--k-color-primary);
+    }
+  }
+
+  &__list-item-percentage {
+    font-size: 12px;
+    color: var(--k-color-text-secondary);
+  }
+
+  &__list-item-status {
+    display: inline-flex;
+
+    &.is-success {
+      color: var(--k-color-success);
+    }
+
+    &.is-error {
+      color: var(--k-color-error);
+    }
+  }
+
+  &__list-item-close {
+    color: var(--k-color-text-secondary);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    &:hover {
+      color: var(--k-color-primary);
+    }
+  }
+
+  // 进度条独占一行（网格第二行通栏）
+  &__list-item-progress {
+    grid-column: 1 / -1;
+  }
+
+  &.is-disabled {
+    .k-upload__trigger {
+      cursor: not-allowed;
+
+      > * {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+    }
+  }
+}

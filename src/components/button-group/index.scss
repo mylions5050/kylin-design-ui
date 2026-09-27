@@ -1,0 +1,72 @@
+.k-btn-group {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+
+  .k-btn {
+    border-radius: 0;
+    position: relative;
+
+    &:not(:first-child) {
+      border-left: none;
+      margin-left: -1px;
+      
+      // 添加分割线，ElementPlus风格，脱离边框影响
+      &::before {
+        content: '';
+        position: absolute;
+        left: -1px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60%;
+        width: 1px;
+        background: var(--k-color-border);
+        z-index: 1;
+        transition: all 0.2s;
+        pointer-events: none;
+      }
+    }
+
+    // 选中状态隐藏分割线并覆盖相邻的线条
+    &.k-btn--primary {
+      z-index: 2;
+      
+      // 隐藏它自己的分割线
+      &::before {
+        opacity: 0;
+      }
+      
+      // 隐藏下一个按钮的分割线
+      & + .k-btn {
+        &::before {
+          opacity: 0;
+        }
+      }
+    }
+
+    // 相邻的双选中状态：中间的线变成灰色背景色覆盖
+    &.k-btn--primary + .k-btn--primary {
+      &::before {
+        background: var(--k-color-primary-light);
+        opacity: 1 !important;
+        left: -1px;
+        height: 60%;
+      }
+    }
+
+    // 悬停时提升层级，但不改变分割线颜色
+    &:hover {
+      z-index: 3;
+    }
+
+    &:first-child {
+      border-top-left-radius: var(--k-border-radius);
+      border-bottom-left-radius: var(--k-border-radius);
+    }
+
+    &:last-child {
+      border-top-right-radius: var(--k-border-radius);
+      border-bottom-right-radius: var(--k-border-radius);
+    }
+  }
+}

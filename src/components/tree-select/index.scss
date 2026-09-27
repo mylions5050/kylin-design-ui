@@ -1,0 +1,73 @@
+.k-tree-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  // 触发器：定位锚点，包裹输入框与箭头
+  &__trigger {
+    position: relative;
+    cursor: pointer;
+  }
+
+  &__trigger.is-disabled {
+    cursor: not-allowed;
+
+    // KInput 同时带 readonly + disabled 时，is-readonly 的透明背景会覆盖
+    // is-disabled 灰底（同优先级靠后），此处按 KSelect 的方式提高优先级压回
+    .k-input {
+      background: var(--k-color-bg-disabled);
+      border-color: var(--k-color-border-disabled);
+
+      .k-input__inner {
+        color: var(--k-color-text-disabled);
+        cursor: not-allowed;
+        background: transparent;
+      }
+    }
+  }
+
+  // 输入框只读展示选中标签，箭头绝对定位在右侧
+  &__input {
+    width: 100%;
+    cursor: pointer;
+  }
+
+  &__clear {
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--k-color-text-disabled);
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  &__caret {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--k-color-text-disabled);
+    font-size: 14px;
+    pointer-events: none;
+    transition: transform 0.3s;
+  }
+
+  &__caret.is-open {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  // 下拉面板：内嵌树
+  &__panel {
+    padding: 8px;
+    overflow: auto;
+    background-color: var(--k-color-bg);
+    border: 1px solid var(--k-color-border-light);
+    border-radius: var(--k-border-radius);
+    box-shadow: var(--k-color-shadow);
+  }
+}

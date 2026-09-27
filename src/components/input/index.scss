@@ -1,0 +1,373 @@
+/* ======================================
+   KInput base
+   ====================================== */
+   .k-input {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    max-width: var(--k-input-max-width, 300px);
+    height: 32px;
+    font-size: 14px;
+    border: 1px solid var(--k-color-border);
+    border-radius: var(--k-border-radius);
+    background: var(--k-color-bg);
+    transition: all 0.2s;
+    box-sizing: border-box;
+    padding: 0 12px;
+  
+    &:not(.is-disabled):hover {
+      border-color: var(--k-color-primary);
+    }
+  
+    &:not(.is-disabled).is-focused {
+      border-color: var(--k-color-primary);
+      box-shadow: 0 0 0 2px var(--k-color-primary-light);
+    }
+  
+    /* ===== 禁用 / 只读 ===== */
+    &.is-disabled {
+      background: var(--k-color-bg-disabled);
+      border-color: var(--k-color-border-disabled);
+      cursor: not-allowed;
+  
+      .k-input__inner {
+        color: var(--k-color-text-disabled);
+        cursor: not-allowed;
+        background: transparent;
+      }
+    }
+  
+    &.is-readonly {
+      // Keep border and shadow for readonly inputs (like KSelect)
+      background: transparent;
+      
+      .k-input__inner {
+        cursor: default;
+        user-select: none; // Prevent text selection in readonly mode
+      }
+      
+      // Allow border color change and shadow on hover/focus even in readonly mode
+      &:hover {
+        border-color: var(--k-color-primary);
+      }
+      
+      &.is-focused {
+        border-color: var(--k-color-primary);
+        box-shadow: 0 0 0 2px var(--k-color-primary-light);
+      }
+    }
+  
+    /* ===== inner ===== */
+    &__inner {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      color: var(--k-color-text-primary);
+      font-size: inherit;
+      outline: none;
+      box-sizing: border-box;
+  
+      &::placeholder {
+        color: var(--k-color-text-placeholder);
+      }
+  
+      /* autofill 只改背景 */
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0 1000px var(--k-color-bg) inset;
+        -webkit-text-fill-color: var(--k-color-text-primary);
+        transition: background-color 5000s ease-in-out 0s;
+      }
+  
+      /* number 去箭头 */
+      &[type='number']::-webkit-inner-spin-button,
+      &[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      &[type='number'] {
+        -moz-appearance: textfield;
+      }
+    }
+  
+    /* ===== 前缀 / 后缀 ===== */
+    &__prefix,
+    &__suffix {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      color: var(--k-color-text-secondary);
+    }
+  
+    &__icon {
+      font-size: 16px;
+      cursor: pointer;
+      transition: color 0.2s;
+  
+      &:hover {
+        color: var(--k-color-primary);
+      }
+    }
+  
+    &__clear:hover {
+      color: var(--k-color-text-primary);
+    }
+  
+    &__password-toggle {
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+  
+    /* ===== 字数统计（安全版） ===== */
+    &__count {
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: var(--k-color-text-secondary);
+      background: var(--k-color-bg);
+      padding: 0 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+  
+    /* 字数撑开 inner */
+    &--has-count .k-input__inner {
+      padding-right: 56px;
+    }
+  
+    /* ===== wrapper ===== */
+    &__wrapper {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+  
+  /* ======================================
+     KTextarea
+     ====================================== */
+  .k-textarea {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: var(--k-textarea-max-width, 400px);
+    font-size: 14px;
+  
+    &__inner {
+      width: 100%;
+      padding: 8px 12px;
+      line-height: 1.5;
+      border: 1px solid var(--k-color-border);
+      border-radius: var(--k-border-radius);
+      background: var(--k-color-bg);
+      color: var(--k-color-text-primary);
+      font-size: inherit;
+      resize: vertical;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s;
+  
+      &:hover {
+        border-color: var(--k-color-primary);
+      }
+  
+      &:focus {
+        border-color: var(--k-color-primary);
+        box-shadow: 0 0 0 2px var(--k-color-primary-light);
+      }
+  
+      &::placeholder {
+        color: var(--k-color-text-placeholder);
+      }
+    }
+  
+    &.is-disabled .k-textarea__inner {
+      background: var(--k-color-bg-disabled);
+      border-color: var(--k-color-border-disabled);
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+    }
+  
+    &.is-readonly .k-textarea__inner {
+      background: var(--k-color-bg-secondary);
+      cursor: default;
+    }
+  
+    &__count {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-size: 12px;
+      color: var(--k-color-text-secondary);
+      background: var(--k-color-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+  }
+  
+  /* ======================================
+     Group 模式（去伪元素 / 防漏缝）
+     ====================================== */
+  .k-input--group {
+    display: flex;
+    align-items: stretch;
+    height: 32px;
+    border: 1px solid var(--k-color-border);
+    border-radius: var(--k-border-radius);
+    overflow: hidden;
+    padding: 0;
+  
+    .k-input__wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+  
+      .k-input__inner {
+        border: none;
+        background: transparent;
+      }
+    }
+  
+    .k-input-group__prepend,
+    .k-input-group__append,
+    .k-input-group__prependCustom,
+    .k-input-group__appendCustom {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background: var(--k-color-bg-secondary);
+      white-space: nowrap;
+      font-size: 14px;
+      color: var(--k-color-text-secondary);
+    }
+  
+    .k-input-group__prepend,
+    .k-input-group__prependCustom {
+      border-right: 1px solid var(--k-color-border);
+      border-radius: var(--k-border-radius) 0 0 var(--k-border-radius);
+    }
+  
+    .k-input-group__append,
+    .k-input-group__appendCustom {
+      border-left: 1px solid var(--k-color-border);
+      border-radius: 0 var(--k-border-radius) var(--k-border-radius) 0;
+    }
+  
+    &:not(.is-disabled):hover {
+      border-color: var(--k-color-primary);
+    }
+  
+    &.is-focused {
+      border-color: var(--k-color-primary);
+      box-shadow: 0 0 0 2px var(--k-color-primary-light);
+    }
+  
+    &.is-disabled {
+      background: var(--k-color-bg-disabled);
+      border-color: var(--k-color-border-disabled);
+      cursor: not-allowed;
+  
+      .k-input-group__prepend,
+      .k-input-group__append {
+        background: var(--k-color-bg-disabled);
+        color: var(--k-color-text-disabled);
+      }
+    }
+  }
+  
+  /* ======================================
+     尺寸
+     ====================================== */
+  .k-input--small {
+    height: 28px;
+    font-size: 12px;
+    padding: 0 10px;
+  }
+  
+  .k-input--large {
+    height: 40px;
+    font-size: 16px;
+    padding: 0 14px;
+  }
+  
+  .k-input--group.k-input--small {
+    height: 28px;
+    .k-input-group__prepend,
+    .k-input-group__append {
+      padding: 0 8px;
+      font-size: 12px;
+    }
+  }
+  
+  .k-input--group.k-input--large {
+    height: 40px;
+    .k-input-group__prepend,
+    .k-input-group__append {
+      padding: 0 14px;
+      font-size: 16px;
+    }
+  }
+
+/* ======================================
+     尺寸 - Textarea
+     ====================================== */
+.k-textarea.k-input--small {
+  font-size: 12px;
+
+  .k-textarea__inner {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
+.k-textarea.k-input--large {
+  font-size: 16px;
+
+  .k-textarea__inner {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+}
+
+// textarea滚动条样式
+.k-textarea__inner {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--k-color-border, #ddd);
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--k-color-primary, rgb(211, 211, 211));
+  }
+}
+
+/* firefox 保底 */
+@supports (scrollbar-width: thin) {
+  .k-textarea__inner {
+    scrollbar-width: thin;
+    scrollbar-color: var(--k-color-border) transparent;
+  }
+}

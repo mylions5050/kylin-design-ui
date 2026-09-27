@@ -1,0 +1,127 @@
+/* KBadge — 徽标数 */
+.k-badge {
+  position: relative;
+  display: inline-block;
+
+  /* 角标：附着在子元素右上角 */
+  &__sup {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    transform: translate(50%, -50%);
+    transform-origin: 100% 0;
+
+    box-sizing: border-box;
+    height: 20px;
+    min-width: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+
+    background: var(--k-color-error, #f5222d);
+    color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 20px;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: 0 0 0 1px var(--k-color-bg, #fff);
+
+    /* 小红点 / 状态点 */
+    &.is-dot {
+      width: 6px;
+      min-width: 6px;
+      height: 6px;
+      padding: 0;
+      border-radius: 50%;
+      box-shadow: none;
+    }
+
+    /* count 插槽自定义内容：裸内容展示，无胶囊底色 */
+    &.is-custom {
+      background: none;
+      box-shadow: none;
+      min-width: 0;
+      padding: 0;
+      height: auto;
+      line-height: 1;
+      border-radius: 0;
+      color: inherit;
+    }
+
+    /* 小号数字徽标 */
+    &.k-badge--small {
+      height: 14px;
+      min-width: 14px;
+      padding: 0 4px;
+      border-radius: 7px;
+      font-size: 10px;
+      line-height: 14px;
+    }
+
+    /* 状态点配色 */
+    &.is-success {
+      background: var(--k-color-success, #52c41a);
+    }
+
+    &.is-processing {
+      background: var(--k-color-primary, #1677ff);
+    }
+
+    &.is-default {
+      background: var(--k-color-text-disabled, #97a4b5);
+    }
+
+    &.is-error {
+      background: var(--k-color-error, #f5222d);
+    }
+
+    &.is-warning {
+      background: var(--k-color-warning, #faad14);
+    }
+
+    /* processing 状态：向外扩散的光环动画 */
+    &.is-processing::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      border: 1px solid var(--k-color-primary, #1677ff);
+      animation: k-badge-processing 1.2s ease-out infinite;
+      pointer-events: none;
+    }
+  }
+
+  /* 状态点右侧说明文字 */
+  &__text {
+    color: var(--k-color-text, #3c4b62);
+    font-size: 14px;
+  }
+
+  /* 独立使用：徽标 + 文字水平排布，角标回归静态流 */
+  &--standalone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    .k-badge__sup {
+      position: static;
+      transform: none;
+    }
+  }
+}
+
+@keyframes k-badge-processing {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}

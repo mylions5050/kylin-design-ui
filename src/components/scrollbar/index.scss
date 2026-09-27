@@ -1,0 +1,64 @@
+.scrollbar {
+  position: relative;
+
+  &__wrap {
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__track {
+    position: absolute;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    cursor: pointer;
+
+    &.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &--vertical {
+      top: 2px;
+      right: 2px;
+      bottom: 2px;
+      width: 6px;
+    }
+
+    &--horizontal {
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      height: 6px;
+    }
+  }
+
+  &__thumb {
+    position: absolute;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(60, 75, 98, 0.5) !important;
+    }
+  }
+
+  &__track--vertical &__thumb {
+    top: 0;
+    right: 0;
+    width: 6px;
+  }
+
+  &__track--horizontal &__thumb {
+    left: 0;
+    bottom: 0;
+    height: 6px;
+  }
+}

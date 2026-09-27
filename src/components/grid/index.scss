@@ -1,0 +1,74 @@
+@use 'sass:math';
+
+.k-row {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  // col 换行时的行间距；row 块之间的间距交给外层容器（gap），不在组件内带 margin
+  row-gap: var(--k-grid-row-gap);
+
+  &--start {
+    justify-content: flex-start;
+  }
+  &--end {
+    justify-content: flex-end;
+  }
+  &--center {
+    justify-content: center;
+  }
+  &--space-around {
+    justify-content: space-around;
+  }
+  &--space-between {
+    justify-content: space-between;
+  }
+  &--top {
+    align-items: flex-start;
+  }
+  &--middle {
+    align-items: center;
+  }
+  &--bottom {
+    align-items: flex-end;
+  }
+}
+
+.k-col {
+  box-sizing: border-box;
+
+  // base span + offset + xs (no media query — always applies)
+  @for $i from 0 through 24 {
+    &--#{$i} {
+      width: percentage(math.div($i, 24));
+    }
+    &--offset-#{$i} {
+      margin-left: percentage(math.div($i, 24));
+    }
+    &--xs-#{$i} {
+      width: percentage(math.div($i, 24));
+    }
+    &--xs-offset-#{$i} {
+      margin-left: percentage(math.div($i, 24));
+    }
+  }
+}
+
+// responsive breakpoints
+$breakpoints: (
+  sm: 768px,
+  md: 992px,
+  lg: 1200px,
+  xl: 1920px,
+);
+@each $bp, $size in $breakpoints {
+  @media (min-width: $size) {
+    @for $i from 0 through 24 {
+      .k-col--#{$bp}-#{$i} {
+        width: percentage(math.div($i, 24));
+      }
+      .k-col--#{$bp}-offset-#{$i} {
+        margin-left: percentage(math.div($i, 24));
+      }
+    }
+  }
+}

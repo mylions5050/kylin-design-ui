@@ -1,0 +1,60 @@
+/* ============ KMessageBox：内容布局（外壳复用 KDialog） ============ */
+
+.k-message-box {
+  /* 图标 + 文本一行，顶部对齐（长文本换行时图标不跑位） */
+  &__body {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 4px 0;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    line-height: 1;
+
+    &.is-success {
+      color: var(--k-color-success);
+    }
+    &.is-warning {
+      color: var(--k-color-warning);
+    }
+    &.is-info {
+      color: var(--k-color-info);
+    }
+    &.is-error {
+      color: var(--k-color-error);
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--k-font-size);
+    line-height: 1.6;
+    color: var(--k-color-text);
+    word-break: break-word;
+  }
+
+  /* prompt 输入区 */
+  &__input-wrap {
+    margin-top: 16px;
+
+    /* 输入框在弹框内自动铺满：KInput / KTextarea 本身就是 width:100%，
+       只是被各自的 max-width 令牌兜底限宽（300px / 400px），这里解除 */
+    --k-input-max-width: 100%;
+    --k-textarea-max-width: 100%;
+  }
+
+  &__input-error {
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--k-color-error);
+  }
+}

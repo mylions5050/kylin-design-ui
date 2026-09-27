@@ -1,0 +1,160 @@
+.k-transfer {
+  display: flex;
+  align-items: stretch; // 两栏面板等高：矮的一侧拉伸对齐
+  gap: 16px;
+
+  // 单栏面板：标题头 + 可选搜索框 + 列表体
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; // 默认固定宽度，不被容器压缩；equalWidth / listStyle.width 时由内联 flex 覆盖
+    width: 340px;
+    min-width: 0; // 均分模式下允许收缩，内容超宽时内部滚动
+    border: 1px solid var(--k-border-color, #dcdfe6);
+    border-radius: 4px;
+    background: var(--k-bg-color, #fff);
+    overflow: hidden;
+  }
+
+  &__panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--k-border-color-lighter, #ebeef5);
+  }
+
+  &__panel-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    color: var(--k-text-color-primary, #303133);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__panel-count {
+    font-size: 12px;
+    color: var(--k-text-color-secondary, #909399);
+  }
+
+  &__panel-search {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--k-border-color-lighter, #ebeef5);
+  }
+
+  &__panel-body {
+    position: relative;
+    // 列表体为弹性容器：内置 KScroll 根元素撑满剩余高度（listStyle.height 模式），
+    // 保证 wrap 的 height:100% 有确定的父高度，内容超出时在 wrap 内滚动
+    flex: 1 1 auto; // 面板 stretch 后吸收富余高度，保证两栏列表体等高
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    > .scrollbar {
+      flex: 1 1 0%;
+      min-height: 0;
+    }
+  }
+
+  &__list {
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: var(--k-fill-color-light, #f5f7fa);
+    }
+
+    &.is-checked {
+      background: var(--k-color-primary-light-9, #ecf5ff);
+    }
+
+    &.is-disabled {
+      cursor: not-allowed;
+
+      .k-transfer__item-label {
+        color: var(--k-text-color-placeholder, #a8abb2);
+      }
+    }
+  }
+
+  &__item-label {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    color: var(--k-text-color-regular, #606266);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // 中间穿梭按钮区（垂直排列，相对面板垂直居中）
+  &__operations {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    flex-shrink: 0; // 中间按钮列不被两栏面板压缩
+  }
+
+  // 分页区：固定在列表体下方，不随内容增减
+  &__panel-pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 12px;
+    border-top: 1px solid var(--k-border-color-lighter, #ebeef5);
+  }
+
+  // footer 插槽：自定义面板底部
+  &__panel-footer {
+    padding: 8px 12px;
+    border-top: 1px solid var(--k-border-color-lighter, #ebeef5);
+  }
+
+  // 空状态：图标在上文字在下，与表单类“暂无数据”统一
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 100%;
+    min-height: 160px;
+    font-size: 14px;
+    color: var(--k-text-color-secondary, #909399);
+  }
+
+  &__empty-icon {
+    font-size: 36px;
+    color: var(--k-text-color-placeholder, #a8abb2);
+  }
+
+  &.is-disabled {
+    opacity: 0.55;
+
+    .k-transfer__item {
+      cursor: not-allowed;
+    }
+  }
+
+  // 状态样式：error / warning 面板边框着色（对齐 antd status）
+  &.is-error .k-transfer__panel {
+    border-color: var(--k-color-error, #f56c6c);
+  }
+
+  &.is-warning .k-transfer__panel {
+    border-color: var(--k-color-warning, #e6a23c);
+  }
+}

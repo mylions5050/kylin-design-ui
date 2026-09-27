@@ -1,0 +1,618 @@
+.k-date-picker {
+  display: inline-flex;
+  width: 100%;
+  max-width: 300px;
+
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  // 范围模式：触发输入框默认宽度 360px，可用 style/class 覆盖为具体值或 100%
+  &.is-range {
+    width: 360px;
+    max-width: 100%;
+
+    .k-input__inner {
+      text-align: center;
+    }
+  }
+
+  &__input {
+    width: 100%;
+  }
+
+  // 范围模式：开始/结束两个输入合并为一个整体选择框（视觉同 KInput 单框）
+  &__range-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    height: 32px;
+    font-size: 14px;
+    border: 1px solid var(--k-color-border);
+    border-radius: var(--k-border-radius);
+    background: var(--k-color-bg);
+    transition: all 0.2s;
+    box-sizing: border-box;
+    padding: 0 12px;
+
+    // 尺寸
+    &--small { height: 24px; font-size: 12px; }
+    &--large { height: 40px; font-size: 16px; }
+
+    &:not(.is-disabled):hover {
+      border-color: var(--k-color-primary);
+    }
+
+    &:not(.is-disabled).is-focused {
+      border-color: var(--k-color-primary);
+      box-shadow: 0 0 0 2px var(--k-color-primary-light);
+    }
+
+    &.is-disabled {
+      background: var(--k-color-bg-disabled);
+      border-color: var(--k-color-border-disabled);
+      cursor: not-allowed;
+
+      .k-date-picker__range-cell {
+        color: var(--k-color-text-disabled);
+        cursor: not-allowed;
+        background: transparent;
+      }
+    }
+  }
+
+  // 内部的开始/结束输入框：与 k-input__inner 保持一致（无边框，透明背景）
+  &__range-cell {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0;
+    color: var(--k-color-text);
+    font: inherit;
+    text-align: center;
+
+    &::placeholder {
+      color: var(--k-color-text-placeholder);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  // 中间分隔符
+  &__range-sep {
+    flex: none;
+    padding: 0 6px;
+    color: var(--k-color-text-placeholder, #c0c4cc);
+    user-select: none;
+  }
+
+  // 末尾日历/清除图标
+  &__range-suffix {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    color: var(--k-color-text-placeholder, #c0c4cc);
+  }
+
+  // 范围选择：左右两块面板并排，共用一个外层卡片，中间用浅灰竖线隔开
+  &__range-panel {
+    display: flex;
+    align-items: stretch;
+
+    .k-date-picker-pane {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &__divider {
+    flex: none;
+    width: 1px;
+    margin: 0 13px 0 10px;
+    background: var(--k-color-border, #dcdfe6);
+  }
+}
+
+.k-date-picker-pane {
+  width: auto;
+
+  // 自定义单元格容器：对齐默认日格子的尺寸与居中，便于 #cell 插槽内容保持风格一致
+  &__cell-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    height: 36px;
+    line-height: 1;
+    box-sizing: border-box;
+  }
+
+  .holiday-dot {
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--k-color-error, #f56c6c);
+    margin: 0 auto;
+    position: relative;
+    top: 1px;
+  }
+
+  .holiday-label {
+    font-size: 10px;
+    line-height: 1.2;
+    color: var(--k-color-error, #f56c6c);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 56px;
+    display: block;
+  }
+  user-select: none;
+  display: grid;
+  gap: 12px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--k-color-text);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.25px;
+  }
+
+  &__nav-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  &__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: var(--k-color-text-tertiary);
+
+    svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    // 范围面板中被约束隐藏的导航按钮：保留占位以保持标题居中，但不显示、不可点
+    &.is-hidden {
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+
+  &__title {
+    color: var(--k-color-text);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  &__weekday {
+    display: flex;
+    width: 41px;
+    height: 24px;
+    justify-content: center;
+    align-items: center;
+    color: var(--k-color-text-tertiary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.25px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px 0;
+
+    // 月/年/季面板：上下左右均匀间隙
+    &.is-non-day {
+      gap: 10px 4px;
+    }
+
+    // 月/年/季范围选择：左右紧贴便于连选，上下保留间隔
+    &.is-non-day.is-range {
+      gap: 10px 0;
+    }
+  }
+
+  // 月/年/季宫格按钮：普通 button，宽度占满格子轨道（100%），内容居中，
+  // 避免 KButton 的固定 padding 挤压自定义 cell；内容变宽不撑破 1fr 列宽（min/max + overflow 兜底）。
+  // 选中用实心 primary；当前月/年/季用轻量 today 标记（primary 文字 + 底部圆点），不占用选中色。
+  &__non-day-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 30px;
+    padding: 0 6px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--k-color-text);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background 0.2s,
+      color 0.2s;
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    &:active {
+      background: var(--k-color-bg-selected);
+    }
+
+    &:disabled {
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    // 当前月/年/季（今日）：蓝色标记（is- 前缀来自 createBem 的 m()）
+    &.is-current {
+      color: var(--k-color-primary);
+      position: relative;
+
+      &:hover {
+        background: var(--k-color-primary-light);
+      }
+    }
+
+    // 已选中：实心 primary 填充
+    &.is-selected,
+    &.is-start,
+    &.is-end {
+      background: var(--k-color-primary);
+      color: var(--k-color-bg);
+      font-weight: 700;
+
+      &.is-start,
+      &.is-end,
+      &:hover,
+      &:active {
+        background: var(--k-color-primary);
+      }
+    }
+
+    // 范围中间态
+    &.is-in-range {
+      background: var(--k-color-primary-light);
+      color: var(--k-color-primary-hover);
+
+      &:hover {
+        background: var(--k-color-primary-light);
+      }
+    }
+  }
+
+  &__empty {
+    height: 36px;
+  }
+
+  &__cell {
+    display: flex;
+    height: 36px;
+    width: 41px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    color: var(--k-color-text);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    &.is-in-range {
+      background: var(--k-color-primary-light);
+      color: var(--k-color-primary-hover);
+
+      &:hover {
+        background: var(--k-color-primary-light);
+      }
+    }
+
+    // 多选：每个选中日期独立高亮（实心主色），命中时覆盖 today 的蓝字蓝点
+    &.is-selected {
+      background: var(--k-color-primary);
+      color: var(--k-color-bg);
+      font-weight: 600;
+
+      &.is-today {
+        color: var(--k-color-bg);
+        &::after {
+          background: var(--k-color-bg);
+        }
+      }
+
+      &:hover {
+        background: var(--k-color-primary);
+      }
+    }
+
+    &.is-in-week {
+      background: var(--k-color-primary);
+      color: var(--k-color-bg);
+      border-radius: var(--k-border-radius);
+
+      // 周选中/hover 时，覆盖「今天」的蓝色文字和蓝点，与白色胶囊背景协调
+      &.is-today {
+        color: var(--k-color-bg);
+        &::after {
+          background: var(--k-color-bg);
+        }
+      }
+
+      &:hover {
+        background: var(--k-color-primary);
+      }
+    }
+
+    &.week-start,
+    &.week-end {
+      background: var(--k-color-primary);
+      color: var(--k-color-bg);
+      font-weight: 700;
+      border-radius: var(--k-border-radius);
+
+      // 周的起始/结束日若是今天，同样覆盖为白字白点
+      &.is-today {
+        color: var(--k-color-bg);
+        &::after {
+          background: var(--k-color-bg);
+        }
+      }
+
+      &:hover {
+        background: var(--k-color-primary);
+      }
+    }
+
+    &.is-other-month {
+      color: var(--k-color-text-disabled);
+      pointer-events: none;
+    }
+
+    &.is-start,
+    &.is-end {
+      background: var(--k-color-primary);
+      color: var(--k-color-bg);
+      font-weight: 700;
+
+      // 选中时覆盖 is-today 的蓝色文字和圆点
+      &.is-today {
+        color: var(--k-color-bg);
+        &::after {
+          background: var(--k-color-bg);
+        }
+      }
+
+      &:hover {
+        background: var(--k-color-primary);
+      }
+    }
+
+    &.is-today {
+      font-weight: 700;
+      color: var(--k-color-primary);
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--k-color-primary);
+      }
+    }
+
+    &:disabled {
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+}
+
+/* ========== 扩展：面板外层容器 + 内容区 ========== */
+.k-date-picker__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: max-content;
+}
+
+// 顶部内容区
+.k-date-picker__panel-top {
+  padding: 0 4px;
+}
+
+// cardPanel 下，top 作为最外层 card 的 header：左右贴合（外层 card 自带 padding）、下方留间距
+.k-date-picker__panel-outer .k-date-picker__panel-top {
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+// 底部内容区：快捷项 + bottom 插槽
+.k-date-picker__panel-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 12px 12px;
+}
+
+// 快捷选项容器
+.k-date-picker__shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// 快捷选项按钮
+.k-date-picker__shortcut {
+  border: 1px solid var(--k-color-border, #dcdfe6);
+  background: var(--k-color-bg);
+  color: var(--k-color-text-secondary);
+  font-size: 12px;
+  line-height: 1;
+  padding: 5px 10px;
+  border-radius: calc(var(--k-border-radius, 4px) - 2px);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: var(--k-color-primary);
+    border-color: var(--k-color-primary);
+    background: var(--k-color-primary-light);
+  }
+}
+
+/* ========== 扩展：范围模式前后缀 ========== */
+.k-date-picker__range-prefix {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+  color: var(--k-color-text-placeholder, #c0c4cc);
+  flex: none;
+}
+
+// 范围框存在前缀时，左内边距收窄以容纳图标/插槽
+.k-date-picker__range-box.has-prefix {
+  padding-left: 8px;
+}
+/* ========== 扩展：卡片式面板布局（cardPanel） ========== */
+// 最外层无边框卡：padding 5px、宽度自适应
+.k-date-picker__panel-outer {
+  background: var(--k-color-bg);
+}
+
+// 底部操作区：贯穿整宽 footer。上边框横贯、按钮垂直居中、右对齐
+.k-date-picker__panel-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin: 12px -10px -10px;
+  padding: 10px;
+  border-top: 1px solid var(--k-color-border);
+}
+
+// 快捷列 + 日期面板横排
+.k-date-picker__panel-card {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+// 内层蓝边卡：承载日期面板（2px 蓝色边框）。统一内边距，让日历主体不贴边、更精致
+.k-date-picker__panel-main {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--k-color-primary);
+  border-radius: calc(var(--k-border-radius, 4px) + 2px);
+  overflow: hidden;
+  background: var(--k-color-bg);
+  padding: 12px 16px;
+}
+
+// 卡片布局下，panel-bottom/bottom 插槽：外层 panel-main 已统一左右内边距，这里只需上方小间距
+.k-date-picker__panel-main-bottom {
+  padding: 8px 0 0;
+}
+
+// 左侧快捷列：竖排、浅蓝 hover。置于日期面板左侧，右侧留间距
+.k-date-picker__panel-side {
+  display: flex;
+  align-items: stretch;
+  margin-right: 10px;
+  padding-left: 2px;
+}
+
+.k-date-picker__panel-side .k-date-picker__shortcuts {
+  flex-direction: column;
+  gap: 4px;
+  width: max-content;
+  min-width: 64px;
+}
+
+.k-date-picker__panel-side .k-date-picker__shortcut {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  background: transparent;
+  color: var(--k-color-text-secondary);
+  font-size: 12px;
+  line-height: 1;
+  padding: 7px 10px;
+  border-radius: var(--k-border-radius, 4px);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: var(--k-color-primary-light);
+    color: var(--k-color-primary);
+  }
+
+  // 已选中（当前日期命中该快捷项）：实心 primary 高亮，明显区分 hover
+  &.is-active,
+  &.is-active:hover {
+    background: var(--k-color-primary);
+    color: var(--k-color-bg);
+    font-weight: 600;
+  }
+}

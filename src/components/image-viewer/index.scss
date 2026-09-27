@@ -1,0 +1,122 @@
+.k-image-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 画布：全屏铺满，图片居中适应窗口 */
+  &__canvas {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__img {
+    /* 默认不铺满全屏，四周留白，避免打开就是一张巨图 */
+    max-width: 80%;
+    max-height: 80%;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: transform 0.3s ease;
+  }
+
+  /* 圆形悬浮按钮（关闭 / 左右切换共用） */
+  &__btn {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(60, 60, 60, 0.5);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(60, 60, 60, 0.75);
+    }
+  }
+
+  &__close {
+    top: 24px;
+    right: 24px;
+  }
+
+  &__prev {
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__next {
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* 底部「当前 / 总数」指示器 */
+  &__counter {
+    position: absolute;
+    left: 50%;
+    bottom: 88px;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    user-select: none;
+  }
+
+  /* 底部工具栏胶囊 */
+  &__toolbar {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 12px;
+    border-radius: 22px;
+    background: rgba(60, 60, 60, 0.5);
+  }
+
+  &__tool {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+  }
+
+  /* 左旋转：refresh 图标水平镜像 */
+  &__flip {
+    display: inline-flex;
+    transform: scaleX(-1);
+  }
+
+  /* 预览器整体淡入淡出（与遮罩的 250ms 基本同步） */
+  &-fade-enter-active,
+  &-fade-leave-active {
+    transition: opacity 0.25s ease;
+  }
+
+  &-fade-enter-from,
+  &-fade-leave-to {
+    opacity: 0;
+  }
+}

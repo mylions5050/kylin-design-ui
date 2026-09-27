@@ -1,0 +1,97 @@
+/* ======================================
+   KImage 图片
+   ====================================== */
+.k-image {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+
+  &__inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+
+    /* 加载完成后淡入，避免生硬闪现 */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &.is-loaded {
+      opacity: 1;
+    }
+
+    /* 开启预览后点击图片打开预览器 */
+    &.is-previewable {
+      cursor: zoom-in;
+    }
+  }
+
+  /* object-fit 各模式 */
+  &__inner--fill {
+    object-fit: fill;
+  }
+  &__inner--contain {
+    object-fit: contain;
+  }
+  &__inner--cover {
+    object-fit: cover;
+  }
+  &__inner--none {
+    object-fit: none;
+  }
+  &__inner--scale-down {
+    object-fit: scale-down;
+  }
+
+  /* 占位 / 加载失败：铺满容器、内容居中 */
+  &__placeholder,
+  &__error {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: var(--k-color-bg-secondary);
+    color: var(--k-color-text-secondary);
+    font-size: 14px;
+  }
+
+  /* 默认占位：antd 同款 shimmer 微光扫过动画 */
+  &__placeholder.is-shimmer {
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        100deg,
+        rgba(255, 255, 255, 0) 30%,
+        rgba(255, 255, 255, 0.55) 50%,
+        rgba(255, 255, 255, 0) 70%
+      );
+      animation: k-image-shimmer 1.6s infinite;
+    }
+  }
+
+  /* 加载失败默认内容：图标 + 文案 上下排列 */
+  &__error-inner {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--k-color-text-disabled);
+  }
+}
+
+@keyframes k-image-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

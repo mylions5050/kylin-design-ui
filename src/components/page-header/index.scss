@@ -1,0 +1,78 @@
+/* ======================================
+   KPageHeader 页头（布局对齐 ElPageHeader）
+   ====================================== */
+.k-page-header {
+  display: block;
+  box-sizing: border-box;
+  color: var(--k-color-text-primary);
+
+  /* 面包屑区域：页头最上方独立一行 */
+  &__breadcrumb {
+    margin-bottom: 16px;
+  }
+
+  /* 标题行：左（返回图标 + 标题）| 分割线 | 主内容 | extra */
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+  }
+
+  &__left {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 40px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--k-color-primary);
+    }
+
+    /* 返回区与主内容之间的竖分割线（同 ElPageHeader） */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -20px;
+      width: 1px;
+      height: 14px;
+      background-color: var(--k-color-border);
+      transform: translateY(-50%);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+    color: inherit;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* 主内容：与返回区同行，flex 撑满把 extra 推到最右 */
+  &__content {
+    display: flex;
+    align-items: center;
+    flex: auto;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__extra {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* 正文内容区（default 插槽） */
+  &__main {
+    padding-top: 16px;
+    font-size: 14px;
+  }
+}

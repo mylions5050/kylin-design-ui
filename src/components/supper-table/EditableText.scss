@@ -1,0 +1,58 @@
+@use 'variables' as *;
+
+.cell-text {
+  width: 100%;
+  min-height: 34px;
+  padding: 0 8px;
+  line-height: 34px;
+  font-size: 13px;
+  font-family: inherit;
+  box-sizing: border-box;
+  outline: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: default;
+  caret-color: transparent;
+
+  &--editing {
+    caret-color: auto;
+    cursor: text;
+  }
+
+  &--active {
+    box-shadow: inset 0 0 0 1px $accent;
+  }
+}
+
+// 标记为代码：10px、红字、浅红底、圆角、padding；inline-block + line-height:1
+// 保证不撑高单行（34px）行高。
+.cell-text code {
+  display: inline-block;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--k-color-error);
+  background: var(--k-color-error-light);
+  border-radius: 3px;
+  padding: 2px 4px;
+  vertical-align: baseline;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+// 链接：蓝色 + 下划线；select 模式点击由 EditableText 拦截 window.open 新标签打开
+.cell-text a {
+  color: var(--k-color-primary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+// 列表：恢复项目符号/序号（全局 ul/ol 重置了 list-style）
+.cell-text ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+.cell-text ol {
+  list-style: decimal;
+  padding-left: 20px;
+  margin: 0;
+}

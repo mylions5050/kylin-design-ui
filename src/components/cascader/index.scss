@@ -1,0 +1,245 @@
+.k-cascader {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  // 触发器：定位锚点，包裹输入框与箭头
+  &__trigger {
+    position: relative;
+    cursor: pointer;
+  }
+
+  &__trigger.is-disabled {
+    cursor: not-allowed;
+
+    // KInput 同时带 readonly + disabled 时，is-readonly 的透明背景会覆盖
+    // is-disabled 灰底（同优先级靠后），此处按 KSelect 的方式提高优先级压回
+    .k-input {
+      background: var(--k-color-bg-disabled);
+      border-color: var(--k-color-border-disabled);
+
+      .k-input__inner {
+        color: var(--k-color-text-disabled);
+        cursor: not-allowed;
+        background: transparent;
+      }
+    }
+  }
+
+  &__input {
+    width: 100%;
+    cursor: pointer;
+
+    .k-input__inner {
+      cursor: pointer;
+    }
+  }
+
+  // 多选触发器：KTag 列表容器，外观对齐 KInput
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    min-height: 32px;
+    padding: 2px 28px 2px 8px;
+    background: var(--k-color-bg);
+    border: 1px solid var(--k-color-border);
+    border-radius: var(--k-border-radius);
+    transition: border-color 0.2s;
+
+    &.is-small {
+      min-height: 24px;
+      padding: 1px 24px 1px 6px;
+    }
+
+    &.is-large {
+      min-height: 40px;
+    }
+  }
+
+  &__tags-prefix {
+    flex-shrink: 0;
+    font-size: 14px;
+    color: var(--k-color-text-secondary);
+  }
+
+  // 折叠余量文本，对齐 KSelect 的 +N 展示
+  &__tags-more {
+    font-size: 14px;
+    color: var(--k-color-text);
+  }
+
+  // 多选搜索：tags 容器内嵌输入框（无边框透明，占满剩余空间）
+  &__tags-input {
+    flex: 1;
+    min-width: 60px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--k-color-text);
+
+    &::placeholder {
+      color: var(--k-color-text-placeholder);
+    }
+  }
+
+  &__tags.is-small &__tags-input {
+    font-size: 12px;
+  }
+
+  &__tags.is-large &__tags-input {
+    font-size: 16px;
+  }
+
+  &__trigger.is-open &__tags {
+    border-color: var(--k-color-primary);
+  }
+
+  &__placeholder {
+    font-size: 14px;
+    color: var(--k-color-text-placeholder);
+  }
+
+  // 图标基础样式：单选时位于 KInput suffix 内（flex 布局，不定位），
+  // 多选时作为 __trigger 直接子元素绝对定位到 __tags 右侧
+  &__clear {
+    color: var(--k-color-text-disabled);
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--k-color-text-secondary);
+    }
+  }
+
+  &__caret {
+    color: var(--k-color-text-disabled);
+    font-size: 14px;
+    pointer-events: none;
+    transition: transform 0.3s;
+  }
+
+  &__caret.is-open {
+    transform: rotate(180deg);
+  }
+
+  &__trigger > &__clear {
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__trigger > &__caret {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__trigger > &__caret.is-open {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  // 下拉面板：多列并排，宽度随展开层级数自适应（列自身有 min-width）
+  &__panel {
+    display: flex;
+    background-color: var(--k-color-bg);
+    border: 1px solid var(--k-color-border-light);
+    border-radius: var(--k-border-radius);
+    box-shadow: var(--k-shadow-overlay);
+    overflow: hidden;
+  }
+
+  // 列容器（KScroll）：负责列间分隔线
+  &__col {
+    &:not(:last-child) {
+      border-right: 1px solid var(--k-color-border-light);
+    }
+  }
+
+  &__column {
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    min-width: 120px;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--k-color-text);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s, color 0.2s;
+
+    &:hover {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    &.is-selected {
+      color: var(--k-color-primary);
+      font-weight: 600;
+    }
+
+    &.is-disabled {
+      color: var(--k-color-text-disabled);
+      cursor: not-allowed;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+  }
+
+  &__option-check {
+    // 勾选由 checkbox 自身点击处理（阻断冒泡），行点击负责下钻
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  &__option-radio {
+    // 可选任意一级时的单选提示，勾选由整行点击处理
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  &__option-arrow {
+    // 箭头固定靠右，文字与前缀控件（checkbox/radio）左对齐相邻
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--k-color-text-placeholder);
+  }
+
+  // 搜索结果列：完整路径文本较长，给足最小宽度
+  &__search {
+    min-width: 240px;
+  }
+
+  // 搜索结果匹配片段高亮
+  &__option-hl {
+    color: var(--k-color-primary);
+    font-weight: 600;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 12px;
+    font-size: 14px;
+    color: var(--k-color-text-placeholder);
+
+    &-icon {
+      font-size: 36px;
+      color: var(--k-color-text-placeholder);
+    }
+  }
+}

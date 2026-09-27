@@ -1,0 +1,50 @@
+.virtual-table {
+  border: 1px solid var(--k-color-border-table);
+  border-radius: 6px;
+
+  &__head {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--k-color-bg-secondary);
+    border-bottom: 1px solid var(--k-color-border-table);
+  }
+
+  &__head-cell {
+    padding: 0 16px;
+    height: 38px;
+    line-height: 38px;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--k-color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__row {
+    display: flex;
+    border-bottom: 1px solid var(--k-color-border-light);
+    align-items: center;
+  }
+
+  &__cell {
+    padding: 0 16px;
+    font-size: 14px;
+    color: var(--k-color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  &__spacer {
+    pointer-events: none;
+  }
+}

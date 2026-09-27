@@ -1,0 +1,57 @@
+.k-rate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  &__item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    // 底层实心星的默认色（灰），选中部分由 __fill 层覆盖为主题色
+    color: var(--k-color-border);
+    transition: transform 0.15s ease;
+  }
+
+  &__item:hover {
+    transform: scale(1.08);
+  }
+
+  &__star {
+    display: block;
+  }
+
+  // 自定义字符（character）：与星星同构的双层渲染，line-height 收紧保证
+  // 底层与上层填充层完全重合
+  &__char {
+    display: block;
+    line-height: 1;
+    font-weight: 600;
+  }
+
+  // 按宽度截取的上层填充：实心星，overflow 裁剪出"半个星星"
+  // 颜色优先读实例上的 --k-rate-color（color 属性注入），缺省为默认金黄
+  &__fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+    color: var(--k-rate-color, #ffc53d);
+  }
+
+  &.k-rate__disabled {
+    opacity: 0.6;
+  }
+
+  &.k-rate__disabled .k-rate__item {
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  // 只读：外观与可交互态一致，仅去掉手型光标与悬浮缩放
+  &.k-rate__readonly .k-rate__item {
+    cursor: default;
+    transform: none;
+  }
+}

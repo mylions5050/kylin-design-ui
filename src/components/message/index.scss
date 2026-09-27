@@ -1,0 +1,166 @@
+// 参考 Ant Design message：顶部居中、按内容自适应宽度、
+// 白底 + 浅边框 + 浮层阴影，图标着色、内容中性色。
+
+.k-message {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: var(--k-z-index-tooltip, 2001);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+
+  &__item {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    max-width: calc(100vw - 32px);
+    padding: 9px 12px;
+    border-radius: var(--k-border-radius);
+    font-size: var(--k-font-size);
+    line-height: 1.5;
+    background: var(--k-color-bg);
+    border: 1px solid var(--k-color-border-light);
+    box-shadow: var(--k-shadow-overlay);
+    color: var(--k-color-text);
+
+    // 效果：plain = type 浅色背景 + type 深色文字（无白底）
+    &.is-plain {
+      border-color: transparent;
+    }
+    &.is-plain.is-success {
+      background: var(--k-color-success-light);
+      color: var(--k-color-success-plain-text);
+    }
+    &.is-plain.is-info {
+      background: var(--k-color-info-light);
+      color: var(--k-color-info-plain-text);
+    }
+    &.is-plain.is-warning {
+      background: var(--k-color-warning-light);
+      color: var(--k-color-warning-plain-text);
+    }
+    &.is-plain.is-error {
+      background: var(--k-color-error-light);
+      color: var(--k-color-error-plain-text);
+    }
+    &.is-plain.is-loading {
+      background: var(--k-color-bg-tertiary);
+    }
+
+    // 效果：dark = type 深色背景 + 白色文字
+    &.is-dark {
+      color: #fff;
+      border-color: transparent;
+    }
+    &.is-dark.is-success {
+      background: var(--k-color-success);
+    }
+    &.is-dark.is-info {
+      background: var(--k-color-info);
+    }
+    &.is-dark.is-warning {
+      background: var(--k-color-warning);
+    }
+    &.is-dark.is-error {
+      background: var(--k-color-error);
+    }
+    &.is-dark.is-loading {
+      background: var(--k-color-text);
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    // 图标随 type 着色（dark 效果下继承白色文字）
+    color: var(--k-color-info);
+
+    .is-success & {
+      color: var(--k-color-success);
+    }
+    .is-warning & {
+      color: var(--k-color-warning);
+    }
+    .is-error & {
+      color: var(--k-color-error);
+    }
+    .is-dark & {
+      color: currentColor;
+    }
+
+    // loading 类型：菊花旋转
+    &.is-spinning {
+      animation: k-message-spin 1s linear infinite;
+    }
+  }
+
+  &__content {
+    min-width: 0;
+    word-break: break-word;
+  }
+
+  &__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    border-radius: var(--k-border-radius-sm);
+    background: transparent;
+    cursor: pointer;
+    color: var(--k-color-text-tertiary);
+    transition: color 0.2s, background-color 0.2s;
+
+    &:hover {
+      color: var(--k-color-text);
+      background: var(--k-color-bg-tertiary);
+    }
+
+    .is-dark & {
+      color: rgba(255, 255, 255, 0.75);
+
+      &:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
+}
+
+@keyframes k-message-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============ 入场 / 离场 / 位移补间动画 ============ */
+.k-message-anim-enter-active {
+  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+}
+.k-message-anim-leave-active {
+  transition: all 0.25s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+}
+.k-message-anim-enter-from {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.k-message-anim-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.k-message-anim-move {
+  transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+}

@@ -1,0 +1,46 @@
+.k-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--k-z-index-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 遮罩背景只在 __mask 层：它是淡入淡出的目标，根节点不能垫底色，
+   否则遮罩挂载瞬间就是全屏实色，fade 看不出来。
+   z-index: -1 必须加：内容子元素（如 Dialog wrapper）多是 static 定位，
+   absolute 的遮罩不压到 -1 就会按绘制顺序盖在它们上面，
+   导致弹窗被蒙灰、弹窗内点击全部落到遮罩上误触发关闭 */
+.k-overlay__mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--k-color-mask);
+  z-index: -1;
+}
+
+/* 毛玻璃遮罩（maskType="blur"，AntD v6 同款）：
+   蒙层背景色不变，追加 backdrop-filter 模糊底下的页面内容；
+   -webkit- 前缀兜底旧版 Safari */
+.k-overlay__mask.k-overlay--blur {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ============ 遮罩淡入淡出（通用） ============ */
+/* 遮罩是 Transition 的直接子元素，过渡 class 落在遮罩自身 */
+.k-overlay__mask.k-overlay-fade-enter-active,
+.k-overlay__mask.k-overlay-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.k-overlay__mask.k-overlay-fade-enter-from,
+.k-overlay__mask.k-overlay-fade-leave-to {
+  opacity: 0;
+}
