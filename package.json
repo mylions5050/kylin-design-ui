@@ -15,6 +15,14 @@
   "author": {
     "name": "liujinhao"
   },
+  "homepage": "https://mylions5050.github.io/kylin-design-ui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mylions5050/kylin-design-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mylions5050/kylin-design-ui/issues"
+  },
   "files": [
     "dist"
   ],
@@ -41,6 +49,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "build:lib": "vite build --config vite.config.lib.ts",
+    "build:pages": "vite build --logLevel info",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"

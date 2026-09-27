@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="src/assets/logo.svg" width="88" alt="Kylin Design UI" />
+<img src="https://raw.githubusercontent.com/mylions5050/kylin-design-ui/main/src/assets/logo.svg" width="88" alt="Kylin Design UI" />
 
 **麒麟为之，企业级 Vue 3 组件库**
 
