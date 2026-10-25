@@ -69,11 +69,21 @@ const copy = (name: string) => {
 }
 
 // 固定一行 7 列；minmax(0,1fr) + cell min-width:0 让长名字走省略号不撑破
+// 窄屏递减列数，避免单元格被挤压变形、图标名全部截断
 .grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 12px;
   margin-top: 12px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
 }
 
 .cell {
@@ -89,6 +99,11 @@ const copy = (name: string) => {
   color: #6a7e9c;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s;
+
+  @media (max-width: 768px) {
+    gap: 6px;
+    padding: 12px 6px;
+  }
 
   &:hover {
     border-color: #0a96e6;

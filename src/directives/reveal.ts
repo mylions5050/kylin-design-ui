@@ -9,7 +9,9 @@ import type { Directive } from 'vue'
  *
  * 实现细节：
  *   - 挂载时打上 .reveal 初始隐藏类，并加入待触发集合
- *   - 模块级单例监听 scroll/resize，rAF 节流后批量检查待触发元素是否进入视口
+ *   - 模块级单例监听 scroll/resize（capture 阶段，页面级滚动与页面内
+ *     滚动容器如 KScrollBar 内部滚动均能触发），rAF 节流后批量检查待
+ *     触发元素是否进入视口
  *     （比 IntersectionObserver 更稳：瞬间锚点跳转/极快甩动也不会漏触发）
  *   - 触发后加 .is-revealed 播放一次性动画并移出集合，不重复触发
  *   - 动画本体在全局样式的 .reveal / @keyframes reveal-in 中定义
@@ -25,9 +27,6 @@ let listening = false
 /** rAF 合帧标记 */
 let ticking = false
 
-/** 上次检查时的滚动位置（用于把瞬移扫过的区域也算作"经过"） */
-let lastY = 0
-
 /** 触发单个元素入场 */
 const reveal = (el: HTMLElement) => {
   el.classList.add('is-revealed')
@@ -35,22 +34,18 @@ const reveal = (el: HTMLElement) => {
 }
 
 /**
- * 批量检查：取上次与本次滚动位置扫过的区间（含视口高度），
- * 元素只要与该区间相交即触发——连续滚动与瞬间跳转都能覆盖。
+ * 批量检查：基于元素实时 viewport 相对位置判断（配合 capture 监听，
+ * 对页面滚动与内部容器滚动均成立）。元素顶端只要越过视口下沿 4% 缓冲线
+ * 即触发——无论当前在视口内还是已被快速滚动甩到上方，都不会漏触发。
  */
 const check = () => {
   ticking = false
-  const y = window.scrollY
   const viewportH = window.innerHeight
-  const scanTop = Math.min(lastY, y)
-  const scanBottom = Math.max(lastY, y) + viewportH
-  lastY = y
+  const scanBottom = viewportH * 0.96
 
   for (const el of pending) {
     const rect = el.getBoundingClientRect()
-    const elTop = rect.top + y
-    const elBottom = elTop + rect.height
-    if (elTop < scanBottom - viewportH * 0.04 && elBottom > scanTop) {
+    if (rect.top < scanBottom) {
       reveal(el)
     }
   }
@@ -70,14 +65,16 @@ const onScroll = () => {
 const startListening = () => {
   if (listening) return
   listening = true
-  window.addEventListener('scroll', onScroll, { passive: true })
+  // scroll 事件不冒泡，但 capture 阶段 window 可收到任意后代元素（含
+  // KScrollBar 等内部滚动容器）的滚动，保证容器内滚动也能触发入场检查
+  window.addEventListener('scroll', onScroll, { capture: true, passive: true })
   window.addEventListener('resize', onScroll, { passive: true })
 }
 
 const stopListening = () => {
   if (!listening) return
   listening = false
-  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('scroll', onScroll, { capture: true } as EventListenerOptions)
   window.removeEventListener('resize', onScroll)
 }
 

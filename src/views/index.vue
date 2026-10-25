@@ -122,6 +122,146 @@ const components = [
     name: 'TreeSelect 树形选择器',
     desc: '下拉面板内嵌 Tree：点击叶子完成选择、触发器回显、可清空。',
   },
+  {
+    path: '/slider',
+    name: 'Slider 滑动输入条',
+    desc: '单值/范围选择、step 步进、tooltip 提示与自定义标记。',
+  },
+  {
+    path: '/transfer',
+    name: 'Transfer 穿梭框',
+    desc: '双栏穿梭选择，可搜索、自定义条目渲染与批量移动。',
+  },
+  {
+    path: '/switch',
+    name: 'Switch 开关',
+    desc: 'v-model 双向绑定、disabled 禁用、自定义颜色与文案。',
+  },
+  {
+    path: '/radio',
+    name: 'Radio 单选框',
+    desc: '基础/按钮组/边框风格，disabled 与 change 事件。',
+  },
+  {
+    path: '/select',
+    name: 'Select 选择器',
+    desc: '单选/多选/分组/可搜索/可清空/自定义选项模板。',
+  },
+  {
+    path: '/input-number',
+    name: 'InputNumber 数字输入框',
+    desc: '步进器、min/max/precision 限制、尺寸与控制按钮位置。',
+  },
+  {
+    path: '/form',
+    name: 'Form 表单',
+    desc: '表单容器：校验规则、label 宽度对齐、行内表单。',
+  },
+  {
+    path: '/upload',
+    name: 'Upload 上传',
+    desc: '文件选择上传、多文件、拖拽、进度与已传列表回显。',
+  },
+  {
+    path: '/cascader',
+    name: 'Cascader 级联选择',
+    desc: '多级联动选择，任意级数、可搜索、可清空。',
+  },
+  {
+    path: '/tag',
+    name: 'Tag 标签',
+    desc: 'type/size/closable/effect 多形态标签，主题跟随。',
+  },
+  {
+    path: '/progress',
+    name: 'Progress 进度条',
+    desc: 'line/circle/dashboard 三种形态，百分比与自定义颜色。',
+  },
+  {
+    path: '/descriptions',
+    name: 'Descriptions 描述列表',
+    desc: 'bordered/列数/对齐方式/自定义标签与内容。',
+  },
+  {
+    path: '/image',
+    name: 'Image 图片',
+    desc: '大图预览、加载失败占位、懒加载。',
+  },
+  {
+    path: '/grid',
+    name: 'Grid 网格',
+    desc: '24 栅格系统，row/col 响应式布局与间距。',
+  },
+  {
+    path: '/container',
+    name: 'Container 容器',
+    desc: 'header/aside/main/footer 布局容器自由组合。',
+  },
+  {
+    path: '/dropdown',
+    name: 'Dropdown 下拉菜单',
+    desc: 'hover/click 触发、分组、禁用项与指令式挂载。',
+  },
+  {
+    path: '/menu',
+    name: 'Menu 菜单',
+    desc: '侧边/顶部导航菜单，多级嵌套、路由模式与手风琴。',
+  },
+  {
+    path: '/breadcrumb',
+    name: 'Breadcrumb 面包屑',
+    desc: '面包屑导航，图标分隔符与路由跳转。',
+  },
+  {
+    path: '/steps',
+    name: 'Steps 步骤条',
+    desc: '横向/竖向步骤条，图标自定义与状态流转。',
+  },
+  {
+    path: '/page-header',
+    name: 'PageHeader 页头',
+    desc: '页头容器，返回导航与操作区插槽。',
+  },
+  {
+    path: '/dialog',
+    name: 'Dialog 对话框',
+    desc: '模态对话框，可拖拽/全屏/嵌套/自定义页脚。',
+  },
+  {
+    path: '/drawer',
+    name: 'Drawer 抽屉',
+    desc: '四方向滑出面板，嵌套抽屉与遮罩控制。',
+  },
+  {
+    path: '/message-box',
+    name: 'MessageBox 弹框',
+    desc: '命令式弹框，alert/confirm/prompt 三种形态。',
+  },
+  {
+    path: '/result',
+    name: 'Result 结果页',
+    desc: 'success/warning/error/info 状态页与自定义内容。',
+  },
+  {
+    path: '/collapse',
+    name: 'Collapse 折叠面板',
+    desc: '手风琴式折叠面板，v-model 控制展开项。',
+  },
+  {
+    path: '/info-popover',
+    name: 'InfoPopover 信息提示',
+    desc: '轻量信息气泡，hover 触发说明文案。',
+  },
+  {
+    path: '/time-select',
+    name: 'TimeSelect 时间选择',
+    desc: '固定时间点选择，起止时间与步进生成可选时刻。',
+  },
+  {
+    path: '/date-time-picker',
+    name: 'DateTimePicker 日期时间',
+    desc: '日期+时间联合选择，基于 DatePicker 与 TimePicker 组合。',
+  },
 ]
 
 /** 统计条：数字进入视口后滚动计数 */
@@ -138,7 +278,7 @@ const statCounts = stats.map((s) => useCountUp(s.end))
 /** 特性四宫格 */
 const features = [
   {
-    title: 'Vue 3 + TypeScript',
+    title: 'Vue3 + Ts',
     desc: '全部组件 <script setup> + TSX 编写，导出完整 .d.ts，Props 提示开箱即得。',
     color: '#0958d9',
   },
@@ -215,8 +355,10 @@ const initial = (name: string): string => {
     <h2 class="home-title">为什么选择 Kylin Design UI</h2>
     <div class="home-features">
       <div v-for="f in features" :key="f.title" class="home-features__item">
-        <span class="home-features__gem" :style="{ background: f.color }" />
-        <h3>{{ f.title }}</h3>
+        <div class="home-features__head">
+          <span class="home-features__gem" :style="{ background: f.color }" />
+          <h3>{{ f.title }}</h3>
+        </div>
         <p>{{ f.desc }}</p>
       </div>
     </div>
@@ -379,7 +521,6 @@ const initial = (name: string): string => {
   border: 1px solid var(--k-color-border);
   border-radius: 12px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
-
   &:hover {
     box-shadow: 0 6px 20px var(--k-color-shadow);
     transform: translateY(-2px);
@@ -396,6 +537,23 @@ const initial = (name: string): string => {
     line-height: 1.7;
     color: var(--k-color-text-secondary);
   }
+}
+
+// 菱形与标题同行、左对齐，正文段落左对齐
+.home-features__head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+
+  h3 {
+    margin: 0;
+    font-size: 15px;
+  }
+}
+
+.home-features__item p {
+  margin: 10px 0 0;
 }
 
 .home-features__gem {

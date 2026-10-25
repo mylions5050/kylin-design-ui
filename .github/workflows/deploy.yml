@@ -41,6 +41,11 @@ jobs:
         env:
           GITHUB_PAGES: true
 
+      # history 路由的 SPA 回退：GitHub Pages 找不到路径时返回 404.html（内容同 index.html），
+      # 前端路由接管后内页刷新/直链不再 404
+      - name: Add 404 SPA fallback
+        run: cp dist/index.html dist/404.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

@@ -5,9 +5,13 @@ import { useTheme } from '@/composables/useTheme'
 import KScrollBar from '@/components/scrollbar/index'
 import KMenu from '@/components/menu/index'
 import type { MenuItem } from '@/components/menu/index'
-import logoUrl from '@/assets/logo.svg'
+import logoLightUrl from '@/assets/logo-light@2x.png'
+import logoDarkUrl from '@/assets/logo-dark@2x.png'
 
 const router = useRouter()
+
+/** GitHub 仓库地址 */
+const REPO_URL = 'https://github.com/mylions5050/kylin-design-ui'
 
 /** 点击侧边栏 Logo 返回全屏落地页 */
 const goHome = () => {
@@ -175,7 +179,7 @@ const pageTitle = computed(() => {
     />
     <aside class="sidebar" :class="{ 'is-open': sidebarOpen }">
       <div class="sidebar-logo-wrap" @click="goHome">
-        <img class="sidebar-logo" :src="logoUrl" alt="Kylin Design UI" />
+        <img class="sidebar-logo" :src="isDark() ? logoDarkUrl : logoLightUrl" alt="Kylin Design UI" />
         <div class="sidebar-logo-name">
           <span class="sidebar-logo-name__title">Kylin Design UI</span>
           <span class="sidebar-logo-name__sub">Vue3 Enterprise UI</span>
@@ -207,7 +211,20 @@ const pageTitle = computed(() => {
           </button>
           <div class="topbar__title">{{ pageTitle }}</div>
         </div>
-        <button class="theme-toggle" @click="toggleTheme" :title="toggleText">
+        <div class="topbar__actions">
+          <a
+            class="topbar__gh"
+            :href="REPO_URL"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub 仓库"
+            title="GitHub 仓库"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+            </svg>
+          </a>
+          <button class="theme-toggle" @click="toggleTheme" :title="toggleText">
           <span class="theme-toggle__icon">
             <!-- 太阳/月亮：内联 SVG，避免 emoji 跨平台渲染不一致 -->
             <svg v-if="isDark()" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -227,9 +244,10 @@ const pageTitle = computed(() => {
               <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5Z" fill="currentColor" />
             </svg>
           </span>
-        </button>
+          </button>
+        </div>
       </header>
-      <KScrollBar class="content" :style="{ height: 'calc(100vh - 72px)' }">
+      <KScrollBar class="content" :style="{ height: 'calc(100vh - 64px)' }">
         <router-view />
       </KScrollBar>
     </div>
@@ -238,7 +256,7 @@ const pageTitle = computed(() => {
 
 <style scoped lang="scss">
 // 复刻 admin-school-dashboard 的 dashboard-layout：229px 侧栏 + 46px 导航项 +
-// 左侧蓝色装饰条（弹性伸缩）+ 底部品牌行 + 72px 顶栏 + #F7F9FC 内容区。
+// 左侧蓝色装饰条（弹性伸缩）+ 底部品牌行 + 64px 顶栏（与首页导航等高）+ #F7F9FC 内容区。
 .dashboard-layout {
   display: flex;
   height: 100vh;
@@ -318,7 +336,7 @@ const pageTitle = computed(() => {
     flex: 1;
     width: 100%;
     padding-left: 10px;
-    height: calc(100vh - 72px - 54px - 64px);
+    height: calc(100vh - 64px - 54px - 64px);
     
     :deep(.scrollbar__wrap) {
       height: 100%;
@@ -360,7 +378,7 @@ const pageTitle = computed(() => {
 
 .topbar {
   display: flex;
-  height: 72px;
+  height: 64px;
   padding: 8px 24px;
   align-items: center;
   gap: 16px;
@@ -387,6 +405,28 @@ const pageTitle = computed(() => {
     font-weight: 700;
     line-height: 24px;
     letter-spacing: 0.25px;
+  }
+}
+
+.topbar__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.topbar__gh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--k-color-text);
+  border-radius: var(--k-border-radius);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--k-color-bg-tertiary);
+    transform: scale(1.05);
   }
 }
 
@@ -467,6 +507,12 @@ const pageTitle = computed(() => {
 
   .topbar {
     padding: 8px 16px;
+
+    &__heading {
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
 
     &__hamburger {
       display: flex;
