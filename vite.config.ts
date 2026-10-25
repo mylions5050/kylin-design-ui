@@ -5,9 +5,9 @@ import { fileURLToPath } from 'node:url'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // GitHub Pages 部署在仓库子路径下（github.io/kylin-design-ui/），
-  // Actions 构建时注入 GITHUB_PAGES=true 生效；本地 dev/预览保持根路径不受影响
-  base: process.env.GITHUB_PAGES ? '/kylin-design-ui/' : '/',
+  // 站点已绑定自定义域名 ui.kdesign-dev.com，部署在域名根路径下，
+  // 资源引用一律用根路径 /（此前 /kylin-design-ui/ 子路径 base 已随自定义域名弃用）
+  base: '/',
   plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
